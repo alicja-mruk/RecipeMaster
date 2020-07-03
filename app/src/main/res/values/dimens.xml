@@ -3,5 +3,6 @@
     <dimen name="title">32sp</dimen>
     <dimen name="home_picture">250dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="fab_dimens">80dp</dimen>
+    <dimen name="default_fab_dimens">80dp</dimen>
+    <dimen name="small_fab_dimens">64dp</dimen>
 </resources>
