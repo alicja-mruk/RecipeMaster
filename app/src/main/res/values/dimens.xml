@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="title">32sp</dimen>
-    <dimen name="small_title">20sp</dimen>
+    <dimen name="small_title">16sp</dimen>
+    <dimen name="description">11sp</dimen>
     <dimen name="home_picture">250dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="default_fab_dimens">80dp</dimen>
