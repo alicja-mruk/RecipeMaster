@@ -4,4 +4,8 @@
     <string name="login_facebook">Zaloguj przez facebooka</string>
     <string name="get_recipe">Get the recipe</string>
     <string name="pizza_recipe">Pizza Recipe!</string>
+    <string name="pizza">Pizza:</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="preparing">Preparing</string>
+    <string name="images">Images</string>
 </resources>
