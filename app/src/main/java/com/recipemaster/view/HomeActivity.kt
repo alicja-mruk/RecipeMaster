@@ -22,7 +22,6 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
     }
 
     override fun initView() {
-        Log.d("init", "init view")
         setOnClickListeners()
     }
 
