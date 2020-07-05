@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 
 interface RecipeApiService {
-     @GET("/test/info.php/")
+     @GET("/test/info.php")
         fun getRecipe(): Call<Recipe>
 }

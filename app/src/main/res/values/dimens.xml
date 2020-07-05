@@ -9,5 +9,6 @@
     <dimen name="small_fab_dimens">64dp</dimen>
     <dimen name="site_text_field_margin">24dp</dimen>
     <dimen name="text_field_margin">8dp</dimen>
+    <dimen name="text_field_bigger_margin">8dp</dimen>
     <dimen name="title_margin">8dp</dimen>
 </resources>

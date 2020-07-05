@@ -1,10 +1,10 @@
 package com.recipemaster.view
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.recipemaster.R
 import com.recipemaster.contract.RecipeDetailsContract
@@ -56,6 +56,11 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
             .load(recipe?.photos?.get(1))
             .placeholder(R.drawable.placeholder)
             .into(recipe_image1)
+
+        Glide.with(this)
+            .load(recipe?.photos?.get(2))
+            .placeholder(R.drawable.placeholder)
+            .into(recipe_image2)
     }
 
     override fun showLoadingError(errorMessage: String?) {
@@ -71,4 +76,5 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
 }

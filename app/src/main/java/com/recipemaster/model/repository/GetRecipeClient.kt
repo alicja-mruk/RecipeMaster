@@ -4,6 +4,7 @@ import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.model.network.request.RecipeApiService
 import com.recipemaster.model.network.request.ServiceBuilder
 import com.recipemaster.model.pojo.Recipe
+import com.recipemaster.util.UrlReplacer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,7 +18,10 @@ class GetRecipeClient : RecipeRepository {
         call.enqueue(object: Callback<Recipe> {
             override fun onResponse(call: Call<Recipe>, response: Response<Recipe>) {
                 if (response.isSuccessful) {
-                    onResponseCallback.onResponse(response.body()!!)
+
+                    val recipe: Recipe = response.body()!!
+                    recipe.photos = UrlReplacer(recipe.photos).replace()
+                    onResponseCallback.onResponse(recipe)
                 }
             }
 
@@ -27,4 +31,5 @@ class GetRecipeClient : RecipeRepository {
 
         })
     }
+
 }

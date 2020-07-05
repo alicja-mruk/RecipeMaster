@@ -33,6 +33,7 @@ class RecipeDetailsPresenter(
 
     private var callback = object : RecipeDetailsContract.OnResponseCallback {
         override fun onResponse(recipe: Recipe) {
+
             view?.updateView(recipe)
         }
 
@@ -40,4 +41,7 @@ class RecipeDetailsPresenter(
             view?.showLoadingError(errorMessage)
         }
     }
+
+
+
 }
