@@ -8,6 +8,8 @@ interface RecipeDetailsContract {
         fun initView()
         fun updateView(recipe: Recipe?)
         fun displayRecipe(recipe:Recipe?)
+        fun displayTextFields(recipe:Recipe?)
+        fun displayPhotos(photos : List<String>)
         fun showLoadingError(errorMessage: String?)
         fun getContext(): Context
     }

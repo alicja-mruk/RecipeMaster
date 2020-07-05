@@ -46,16 +46,21 @@
                 app:fab_title="@string/get_recipe"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:background="@android:color/white"
+                android:background="@drawable/fab_label_background"
                 android:src="@drawable/get_recipe"
+                app:fab_stroke_visible="true"
+                android:textStyle ="bold"
                 app:fab_size="mini" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/login_facebook_btn"
                 app:fab_title="@string/login_facebook"
+                android:background="@drawable/fab_label_background"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/facebook"
+                app:fab_stroke_visible="true"
+                android:textStyle ="bold"
                 app:fab_size="mini" />
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
