@@ -53,7 +53,12 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.24'
     implementation 'com.google.dagger:dagger-android:2.24'
     implementation 'com.google.dagger:dagger-android-support:2.24'
+    //rxjava
+    implementation "io.reactivex.rxjava3:rxjava:3.0.4"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
+    //manifest permisions simplify library
+    implementation 'com.karumi:dexter:6.2.0'
     //    Tests
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

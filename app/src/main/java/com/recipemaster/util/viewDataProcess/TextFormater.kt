@@ -1,6 +1,6 @@
 package com.recipemaster.util.viewDataProcess
 
-object TextBeautify{
+object TextFormater{
 
     fun processIngredients(ingredients: List<String>): String {
         return buildString{

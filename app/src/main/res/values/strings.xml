@@ -8,4 +8,9 @@
     <string name="ingredients">Ingredients:</string>
     <string name="preparing">Preparing</string>
     <string name="images">Images</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dialog_title">Do you want to save the picture?</string>
+    <string name="picture_saved">Picture has been saved</string>
+    <string name="picture_not_saved">Canceled</string>
 </resources>

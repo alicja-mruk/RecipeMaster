@@ -11,21 +11,27 @@ interface RecipeDetailsContract {
         fun displayTextFields(recipe:Recipe?)
         fun displayPhotos(photos : List<String>)
         fun showLoadingError(errorMessage: String?)
-        fun getContext(): Context
+        fun onSavePhotosClickListeners(photos: List<String>)
+        fun callSavePicture(url : String)
+        fun showConfirmDialog()
+        fun requestPermissions()
     }
 
     interface Presenter {
         fun dropView()
+        fun savePicture(url : String)
         fun getRecipeData()
-        fun getCurrentUserData()
+        fun formatIngredients(ingredients : List<String>) : String
+        fun formatPreparing(preparing : List<String>) : String
     }
 
     interface Model {
-        fun fetchData()
+        fun savePictureIntoStorage(url : String)
     }
 
     interface OnResponseCallback {
         fun onResponse(recipe: Recipe)
         fun onError(errorMessage: String?)
     }
+
 }
