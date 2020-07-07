@@ -171,7 +171,7 @@
             app:layout_constraintTop_toBottomOf="@+id/recipe_image0" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/logged_as"
+            android:id="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="@dimen/site_text_field_margin"
@@ -201,7 +201,7 @@
                 app:layout_constraintGuide_percent="0.85" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/logged_as"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -213,15 +213,14 @@
                 tools:text="Logged as Username Lastname" />
 
             <ImageView
-                android:id="@+id/profile_image"
+                android:id="@+id/profile_picture"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-
                 android:layout_marginStart="9dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintStart_toEndOf="@+id/logged_as"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

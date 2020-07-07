@@ -10,7 +10,8 @@ import com.bumptech.glide.Glide
 import com.recipemaster.R
 import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.model.pojo.Recipe
-import com.recipemaster.model.repository.GetRecipeClient
+import com.recipemaster.model.repository.appRepository.AppRepositoryImpl
+import com.recipemaster.model.repository.recipe.RecipeClient
 import com.recipemaster.model.storage.RecipeDetailsService
 import com.recipemaster.presenter.RecipeDetailsPresenter
 import com.recipemaster.util.ToastMaker
@@ -25,7 +26,8 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
         setContentView(R.layout.activity_details)
         context = applicationContext
 
-        presenter = RecipeDetailsPresenter(this, GetRecipeClient(), RecipeDetailsService())
+        presenter = RecipeDetailsPresenter(this,
+            RecipeClient(), RecipeDetailsService(), AppRepositoryImpl())
 
         initView()
     }
@@ -108,6 +110,14 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
         presenter?.requestPermissions(permissions)
+    }
+
+    override fun updateFooter(userDataBundle: Bundle) {
+        logged_as.text = userDataBundle.getString("USERNAME")
+        Glide.with(this)
+            .load(userDataBundle.getString("PROFILE_PICTURE"))
+            .placeholder(R.drawable.placeholder)
+            .into(profile_picture)
     }
 
     fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

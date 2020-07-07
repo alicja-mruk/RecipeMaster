@@ -1,8 +1,6 @@
 package com.recipemaster.contract
 
-import android.content.Context
-import android.content.Intent
-import com.facebook.CallbackManager
+import android.os.Bundle
 import com.karumi.dexter.MultiplePermissionsReport
 import com.recipemaster.model.pojo.Recipe
 
@@ -19,6 +17,7 @@ interface RecipeDetailsContract {
         fun callSavePicture(url : String)
         fun showConfirmDialog()
         fun requestPermissions()
+        fun updateFooter(userDataBundle: Bundle)
     }
 
     interface Presenter {
@@ -29,7 +28,7 @@ interface RecipeDetailsContract {
         fun formatPreparing(preparing : List<String>) : String
         fun requestPermissions(permissions : List<String>)
         fun allPermissionsGranted(report: MultiplePermissionsReport) : Boolean
-
+        fun callUpdateFooter()
     }
 
     interface Model {

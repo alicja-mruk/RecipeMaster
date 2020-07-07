@@ -1,5 +1,6 @@
 package com.recipemaster.presenter
 
+import android.os.Bundle
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -7,9 +8,9 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.model.pojo.Recipe
-import com.recipemaster.model.repository.RecipeRepository
+import com.recipemaster.model.repository.appRepository.AppRepository
+import com.recipemaster.model.repository.recipe.RecipeRepository
 import com.recipemaster.model.storage.RecipeDetailsService
-import com.recipemaster.util.ToastMaker
 import com.recipemaster.util.viewDataProcess.TextFormater
 import com.recipemaster.view.RecipeDetailsActivity
 
@@ -17,13 +18,16 @@ import com.recipemaster.view.RecipeDetailsActivity
 class RecipeDetailsPresenter(
     _view: RecipeDetailsContract.View?,
     _client: RecipeRepository,
-    _storage_client : RecipeDetailsService
+    _storage_client : RecipeDetailsService,
+    _app_repository : AppRepository
 )
     :RecipeDetailsContract.Presenter{
 
     private var view: RecipeDetailsContract.View? = _view
-    private var networkClient: RecipeRepository = _client
-    private var storageClient : RecipeDetailsService = _storage_client
+    private val networkClient: RecipeRepository = _client
+    private val storageClient : RecipeDetailsService = _storage_client
+    private val appRepository: AppRepository = _app_repository
+    private lateinit var userDataBundle : Bundle
 
     init {
         view?.initView()
@@ -40,6 +44,7 @@ class RecipeDetailsPresenter(
     override fun getRecipeData(){
         //todo check network connection
         networkClient.getRecipe(callback)
+        callUpdateFooter()
     }
 
     override fun formatIngredients(ingredients : List<String>) : String {
@@ -48,6 +53,16 @@ class RecipeDetailsPresenter(
 
     override fun formatPreparing(preparing : List<String>): String {
         return TextFormater.processIngredients(preparing)
+    }
+
+    override fun callUpdateFooter(){
+        //todo if data has been updated
+       if(true){
+           userDataBundle = appRepository.getUserDataBundle()
+           view?.updateFooter(userDataBundle)
+       }else{
+           //todo else some problem with getting data
+       }
     }
 
     override fun requestPermissions(permissions: List<String>) {
@@ -76,7 +91,7 @@ class RecipeDetailsPresenter(
 
     private var callback = object : RecipeDetailsContract.OnResponseCallback {
         override fun onResponse(recipe: Recipe) {
-            view?.updateView(recipe)git
+            view?.updateView(recipe)
         }
 
         override fun onError(errorMessage: String?) {

@@ -1,4 +1,4 @@
-package com.recipemaster.model.repository
+package com.recipemaster.model.repository.user
 import com.recipemaster.contract.HomeContract
 
 interface UserRepository {

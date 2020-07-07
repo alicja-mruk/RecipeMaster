@@ -1,4 +1,4 @@
-package com.recipemaster.model.repository
+package com.recipemaster.model.repository.recipe
 
 import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.model.network.request.RecipeApiService
@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GetRecipeClient : RecipeRepository {
+class RecipeClient : RecipeRepository {
     override fun getRecipe(onResponseCallback: RecipeDetailsContract.OnResponseCallback) {
 
         val request  = ServiceBuilder.buildService(RecipeApiService::class.java)

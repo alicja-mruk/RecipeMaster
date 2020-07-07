@@ -3,8 +3,9 @@ package com.recipemaster.presenter
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -18,7 +19,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.recipemaster.contract.HomeContract
-import com.recipemaster.model.repository.GetUserClient
+import com.recipemaster.model.json.JsonParser
+import com.recipemaster.model.repository.user.UserClient
 import com.recipemaster.presenter.RecipeDetailsPresenter.Companion.PERMISSION_DENIED
 import com.recipemaster.view.RecipeDetailsActivity
 import org.json.JSONObject
@@ -26,15 +28,17 @@ import org.json.JSONObject
 
 class HomePresenter(
     _view: HomeContract.View?,
-    _client: GetUserClient
+    _client: UserClient
 ) : HomeContract.Presenter {
 
     private var view: HomeContract.View? = _view
-    private var client: GetUserClient = _client
+    private val client: UserClient = _client
 
     private lateinit var callbackManager: CallbackManager
     private var permissionNeeds: List<String> =
         listOf("name", "public_profile")
+    private lateinit var userDataBundle  : Bundle
+    private var isJsonReceived = false
 
     init {
         view?.setOnClickListeners()
@@ -63,24 +67,23 @@ class HomePresenter(
                 }
 
                 override fun onPermissionDenied(response: PermissionDeniedResponse) {
-                    Toast.makeText(view?.getContext(), PERMISSION_DENIED, Toast.LENGTH_SHORT).show()
+                    view?.showToast(PERMISSION_DENIED)
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
                     permission: PermissionRequest?,
                     token: PermissionToken?
                 ) {
-                    Toast.makeText(
-                        view?.getContext(),
-                        PERMISSION_AUDIO_RATIONALE,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    view?.showToast(PERMISSION_AUDIO_RATIONALE)
                 }
             }).check()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager.onActivityResult(requestCode, resultCode, data)
+        if(callbackManager.onActivityResult(requestCode, resultCode, data)) {
+            return
+        }
     }
 
     override fun logIntoFacebook() {
@@ -98,30 +101,42 @@ class HomePresenter(
                 }
 
                 override fun onCancel() {
-                    Log.d("FB", "canceled")
-                    //some toast
+                    view?.showToast(LOGIN_CANCELED)
                 }
 
                 override fun onError(error: FacebookException?) {
-                    Log.d("FB", "error")
-                    //some toast
+                    view?.showToast(LOGIN_ERROR)
                 }
             })
     }
 
     private var userDataCallback = object : HomeContract.OnResponseCallback {
         override fun onResponse(json: JSONObject?) {
-            //view.update view with the given data ..
-            //todo update the view with the given data
-            //parse data json
-            Log.d("RESPONSE: ", "json.toString()")
+            Log.d("RESPONSE: ", json.toString())
+            parseJsonResponse(json)
         }
 
     }
 
+    override fun parseJsonResponse(json: JSONObject?){
+        val jsonParser = JsonParser(json)
+        val userName = jsonParser.parseName()
+        val userId = jsonParser.parseUserId()
+        val profilePictureUrl = jsonParser.createProfilePictureUrl()
+
+        userDataBundle =  bundleOf(
+            Pair("USER_ID", userId),
+            Pair("USERNAME", userName),
+            Pair("PROFILE_PICTURE", profilePictureUrl)
+        )
+        isJsonReceived = true
+        //todo: pack the data into some bundle
+    }
 
     companion object {
         const val PERMISSION_AUDIO_RATIONALE = "You need to give access to the audio"
+        const val LOGIN_CANCELED = "Logging has been canceled"
+        const val LOGIN_ERROR = "Error has occured"
     }
 
 

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.facebook.*
 import com.recipemaster.R
 import com.recipemaster.contract.HomeContract
-import com.recipemaster.model.repository.GetUserClient
+import com.recipemaster.model.repository.user.UserClient
 import com.recipemaster.presenter.HomePresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -23,7 +23,7 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
         super.onCreate(savedInstanceState)
         initFacebookSDK()
         setContentView(R.layout.activity_main)
-        presenter = HomePresenter(this, GetUserClient())
+        presenter = HomePresenter(this, UserClient())
 
     }
 
@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
 
     }
 
-    override fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data);
     }
 

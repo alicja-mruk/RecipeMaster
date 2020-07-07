@@ -1,4 +1,4 @@
-package com.recipemaster.model.repository
+package com.recipemaster.model.repository.recipe
 
 import com.recipemaster.contract.RecipeDetailsContract
 
