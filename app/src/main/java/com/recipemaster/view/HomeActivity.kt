@@ -1,28 +1,39 @@
 package com.recipemaster.view
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.facebook.*
 import com.recipemaster.R
 import com.recipemaster.contract.HomeContract
+import com.recipemaster.model.repository.GetUserClient
 import com.recipemaster.presenter.HomePresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
+
+
 class HomeActivity : AppCompatActivity() , HomeContract.View{
     private  var presenter : HomeContract.Presenter ? = null
+//    private lateinit var progressbar : Dialog
+    private lateinit var callbackManager : CallbackManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initFacebookSDK()
         setContentView(R.layout.activity_main)
-
-        presenter = HomePresenter(this)
+        presenter = HomePresenter(this, GetUserClient())
 
     }
 
     override fun initView() {
         setOnClickListeners()
+    }
+
+    override fun initFacebookSDK() {
+        FacebookSdk.sdkInitialize(getContext())
+        FacebookSdk.setApplicationId(getContext().resources?.getString(R.string.facebook_app_id))
     }
 
     override fun getContext(): Context {
@@ -39,9 +50,22 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
         }
 
         login_facebook_btn.setOnClickListener {
-            presenter?.loginToFacebook()
+            presenter?.tryLoginToFacebook()
         }
 
+    }
+
+    override fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        presenter?.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {
@@ -49,3 +73,5 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
         presenter?.dropView()
     }
 }
+
+

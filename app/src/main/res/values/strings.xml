@@ -13,4 +13,7 @@
     <string name="dialog_title">Do you want to save the picture?</string>
     <string name="picture_saved">Picture has been saved</string>
     <string name="picture_not_saved">Canceled</string>
+    <string name="facebook_app_id">1794698407395009</string>
+    <string name="fb_login_protocol_scheme">fb1794698407395009</string>
+    <string name="facebook_hash_code">Ptbtl+dFgHBlbuwGHwZTm3vpJ0g=</string>
 </resources>

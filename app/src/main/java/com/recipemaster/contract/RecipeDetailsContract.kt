@@ -1,11 +1,15 @@
 package com.recipemaster.contract
 
 import android.content.Context
+import android.content.Intent
+import com.facebook.CallbackManager
+import com.karumi.dexter.MultiplePermissionsReport
 import com.recipemaster.model.pojo.Recipe
 
 interface RecipeDetailsContract {
     interface View {
         fun initView()
+        fun showToast(message:String)
         fun updateView(recipe: Recipe?)
         fun displayRecipe(recipe:Recipe?)
         fun displayTextFields(recipe:Recipe?)
@@ -23,6 +27,9 @@ interface RecipeDetailsContract {
         fun getRecipeData()
         fun formatIngredients(ingredients : List<String>) : String
         fun formatPreparing(preparing : List<String>) : String
+        fun requestPermissions(permissions : List<String>)
+        fun allPermissionsGranted(report: MultiplePermissionsReport) : Boolean
+
     }
 
     interface Model {
