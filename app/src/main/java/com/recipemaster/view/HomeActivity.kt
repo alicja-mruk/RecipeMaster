@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.facebook.*
 import com.recipemaster.R
 import com.recipemaster.contract.HomeContract
+import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManagerImpl
 import com.recipemaster.model.repository.user.UserClient
 import com.recipemaster.presenter.HomePresenter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,7 +24,7 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
         super.onCreate(savedInstanceState)
         initFacebookSDK()
         setContentView(R.layout.activity_main)
-        presenter = HomePresenter(this, UserClient())
+        presenter = HomePresenter(this, UserClient(), SharedPreferencesManagerImpl)
 
     }
 
@@ -57,6 +58,14 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
 
     override fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    override fun setGetTheRecipeButtonToClickable() {
+        get_recipe_btn.setAlpha(255)
+    }
+
+    override fun setGetTheRecipeButtonToNotClickable() {
+        get_recipe_btn.setAlpha(100)
     }
 
     override fun onActivityResult(

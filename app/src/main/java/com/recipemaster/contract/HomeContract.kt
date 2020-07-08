@@ -14,6 +14,8 @@ interface HomeContract {
         fun showToast(message  : String)
         fun setOnClickListeners()
         fun callOnActivityResult(requestCode : Int, resultCode:Int, data: Intent?)
+        fun setGetTheRecipeButtonToClickable()
+        fun setGetTheRecipeButtonToNotClickable()
 //        fun showProgressDialog()
 //        fun dismissProgressDialog()
 

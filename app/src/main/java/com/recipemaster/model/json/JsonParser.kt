@@ -13,7 +13,7 @@ class JsonParser (private val jsonObject: JSONObject?){
     }
 
     fun createProfilePictureUrl() : String?{
-        return "$FACEBOOK_URL${parseUserId()}/picture?type=large&height=50&width=50"
+        return "$FACEBOOK_URL${parseUserId()}/picture"
     }
 
     companion object{

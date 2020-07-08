@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:facebook="http://ogp.me/ns/fb#"
     android:background="@android:color/white"
     tools:context=".view.HomeActivity">
 
@@ -51,6 +50,7 @@
                 android:id="@+id/get_recipe_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:alpha=".30"
                 android:background="@drawable/fab_label_background"
                 android:src="@drawable/get_recipe"
                 android:textStyle="bold"
@@ -59,31 +59,29 @@
                 app:fab_title="@string/get_recipe" />
 
 
-
-
-<!--                        <com.getbase.floatingactionbutton.FloatingActionButton-->
-<!--                            android:id="@+id/login_facebook_btn"-->
-<!--                            app:fab_title="@string/login_facebook"-->
-<!--                            android:background="@drawable/fab_label_background"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:src="@drawable/facebook"-->
-<!--                            app:fab_stroke_visible="true"-->
-<!--                            android:textStyle ="bold"-->
-<!--                            app:fab_size="mini" />-->
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/login_facebook_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fab_label_background"
+                android:src="@drawable/facebook"
+                android:textStyle="bold"
+                app:fab_size="mini"
+                app:fab_stroke_visible="true"
+                app:fab_title="@string/login_facebook" />
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_facebook_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="5dp"
-            facebook:confirm_logout="false"
-            facebook:fetch_user_info="true"
-            facebook:login_text=""
-            facebook:logout_text=""/>
+        <!--        <com.facebook.login.widget.LoginButton-->
+        <!--            android:id="@+id/login_facebook_btn"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            facebook:confirm_logout="true"-->
+        <!--            facebook:fetch_user_info="true"-->
+        <!--            facebook:login_text=""-->
+        <!--            facebook:logout_text=""/>-->
     </RelativeLayout>
 
 

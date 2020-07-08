@@ -17,7 +17,9 @@ interface RecipeDetailsContract {
         fun callSavePicture(url : String)
         fun showConfirmDialog()
         fun requestPermissions()
-        fun updateFooter(userDataBundle: Bundle)
+        fun updateUserName(userName : String?)
+        fun updateUserProfilePicture(profilePicture:String?)
+        fun updateFooter(userName:String?, photoUrl : String?)
     }
 
     interface Presenter {
@@ -26,9 +28,9 @@ interface RecipeDetailsContract {
         fun getRecipeData()
         fun formatIngredients(ingredients : List<String>) : String
         fun formatPreparing(preparing : List<String>) : String
-        fun requestPermissions(permissions : List<String>)
+        fun requestPermissions()
         fun allPermissionsGranted(report: MultiplePermissionsReport) : Boolean
-        fun callUpdateFooter()
+        fun callUpdateFooterView()
     }
 
     interface Model {

@@ -20,7 +20,10 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.recipemaster.contract.HomeContract
 import com.recipemaster.model.json.JsonParser
+import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
+import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManagerImpl
 import com.recipemaster.model.repository.user.UserClient
+import com.recipemaster.presenter.RecipeDetailsPresenter.Companion.NOT_LOGGED
 import com.recipemaster.presenter.RecipeDetailsPresenter.Companion.PERMISSION_DENIED
 import com.recipemaster.view.RecipeDetailsActivity
 import org.json.JSONObject
@@ -28,20 +31,22 @@ import org.json.JSONObject
 
 class HomePresenter(
     _view: HomeContract.View?,
-    _client: UserClient
+    _client: UserClient,
+    _shared_preferences : SharedPreferencesManager
 ) : HomeContract.Presenter {
 
     private var view: HomeContract.View? = _view
     private val client: UserClient = _client
+    private val sharedPreferencesManager: SharedPreferencesManager = _shared_preferences
 
     private lateinit var callbackManager: CallbackManager
     private var permissionNeeds: List<String> =
-        listOf("name", "public_profile")
-    private lateinit var userDataBundle  : Bundle
-    private var isJsonReceived = false
+        listOf("name", "public_profile", "user_link")
+
 
     init {
         view?.setOnClickListeners()
+        view?.setGetTheRecipeButtonToNotClickable()
     }
 
     override fun dropView() {
@@ -49,9 +54,13 @@ class HomePresenter(
     }
 
     override fun openRecipeDetailsActivity() {
-        Log.d("Details", "Clicking at details icon")
-        val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
-        view?.getContext()?.startActivity(intent)
+        if(SharedPreferencesManagerImpl.isLoggedIn()){
+            val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
+            view?.getContext()?.startActivity(intent)
+        }else{
+            view?.showToast(NOT_LOGGED)
+        }
+
     }
 
     override fun tryLoginToFacebook() {
@@ -88,24 +97,32 @@ class HomePresenter(
 
     override fun logIntoFacebook() {
         callbackManager = CallbackManager.Factory.create()
+        val loginManager = LoginManager.getInstance()
 
-        LoginManager.getInstance().logInWithReadPermissions(view as Activity, permissionNeeds)
 
+        loginManager.logInWithReadPermissions(view as Activity, permissionNeeds)
         LoginManager.getInstance().registerCallback(callbackManager,
             object : FacebookCallback<LoginResult?> {
                 override fun onSuccess(loginResult: LoginResult?) {
-
-                    if (AccessToken.getCurrentAccessToken() != null) {
+                    if (AccessToken.getCurrentAccessToken() == null) {
+                        sharedPreferencesManager.setIsLoggedIn(false)
+                        view?.setGetTheRecipeButtonToNotClickable()
+                    }else{
                         client.requestUserData(userDataCallback)
+                        sharedPreferencesManager.setIsLoggedIn(true)
+                        view?.setGetTheRecipeButtonToClickable()
                     }
                 }
 
                 override fun onCancel() {
                     view?.showToast(LOGIN_CANCELED)
+                    sharedPreferencesManager.setIsLoggedIn(false)
                 }
 
                 override fun onError(error: FacebookException?) {
                     view?.showToast(LOGIN_ERROR)
+                    view?.setGetTheRecipeButtonToNotClickable()
+                    sharedPreferencesManager.setIsLoggedIn(false)
                 }
             })
     }
@@ -124,13 +141,9 @@ class HomePresenter(
         val userId = jsonParser.parseUserId()
         val profilePictureUrl = jsonParser.createProfilePictureUrl()
 
-        userDataBundle =  bundleOf(
-            Pair("USER_ID", userId),
-            Pair("USERNAME", userName),
-            Pair("PROFILE_PICTURE", profilePictureUrl)
-        )
-        isJsonReceived = true
-        //todo: pack the data into some bundle
+        sharedPreferencesManager.setCurrentUserId(userId)
+        sharedPreferencesManager.setCurrentUserName(userName)
+        sharedPreferencesManager.setCurrentUserPhotoUrl(profilePictureUrl)
     }
 
     companion object {

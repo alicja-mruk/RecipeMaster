@@ -16,4 +16,5 @@
     <string name="facebook_app_id">1794698407395009</string>
     <string name="fb_login_protocol_scheme">fb1794698407395009</string>
     <string name="facebook_hash_code">Ptbtl+dFgHBlbuwGHwZTm3vpJ0g=</string>
+    <string name="logged_as">Logged as </string>
 </resources>
