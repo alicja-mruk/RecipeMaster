@@ -1,7 +1,5 @@
 package com.recipemaster.presenter
 
-import android.Manifest
-import android.os.Bundle
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -10,10 +8,10 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.model.repository.recipe.RecipeRepository
-import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
 import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManagerImpl
+import com.recipemaster.util.Permissions
 import com.recipemaster.model.storage.RecipeDetailsService
-import com.recipemaster.util.viewDataProcess.TextFormater
+import com.recipemaster.util.processData.TextFormater
 import com.recipemaster.view.RecipeDetailsActivity
 
 
@@ -27,10 +25,7 @@ class RecipeDetailsPresenter(
     private var view: RecipeDetailsContract.View? = _view
     private val networkClient: RecipeRepository = _client
     private val storageClient : RecipeDetailsService = _storage_client
-    private val  permissions = listOf(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    )
+
 
     init {
         view?.initView()
@@ -41,26 +36,28 @@ class RecipeDetailsPresenter(
     }
 
     override fun savePicture(url : String) {
-        storageClient.savePictureIntoStorage(url)
+        try{
+            storageClient.savePictureIntoStorage(url)
+        }catch(e:Exception){
+            e.printStackTrace()
+            view?.showToast(SAVING_ERROR)
+        }
+
     }
 
     override fun getRecipeData(){
         //todo check network connection
-        if(SharedPreferencesManagerImpl.isLoggedIn()){
-            networkClient.getRecipe(callback)
-            callUpdateFooterView()
-        }else{
-            view?.showToast(NOT_LOGGED)
-        }
-
+        networkClient.getRecipe(callback)
+        callUpdateFooterView()
     }
+
 
     override fun formatIngredients(ingredients : List<String>) : String {
         return TextFormater.processIngredients(ingredients)
     }
 
     override fun formatPreparing(preparing : List<String>): String {
-        return TextFormater.processIngredients(preparing)
+        return TextFormater.processPreparing(preparing)
     }
 
     override fun callUpdateFooterView(){
@@ -72,12 +69,11 @@ class RecipeDetailsPresenter(
 
     override fun requestPermissions() {
         Dexter.withContext(RecipeDetailsActivity.getContext())
-            .withPermissions(
-                permissions
-            ).withListener(object : MultiplePermissionsListener {
+            .withPermissions(Permissions.storagePermissions)
+            .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                     if(allPermissionsGranted(report)){
-                      view?.showConfirmDialog()
+                        view?.showConfirmDialog()
                     }
                     else{
                         view?.showToast(PERMISSION_DENIED)
@@ -109,9 +105,11 @@ class RecipeDetailsPresenter(
     }
 
     companion object{
+        const val PERMISSIONS_GRANTED = "All permissions have been granted"
         const val PERMISSION_RATIONALE= "Access to the storage is needed to save the picture"
         const val PERMISSION_DENIED = "Permission denied"
         const val NOT_LOGGED = " You need to log in to acces the data!"
+        const val SAVING_ERROR = "URL can not be empty!"
     }
 
 }

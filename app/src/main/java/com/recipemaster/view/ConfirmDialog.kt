@@ -7,6 +7,7 @@ import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.util.ToastMaker
 import com.recipemaster.view.RecipeDetailsActivity.Companion.CLICKED_URL
 
+
 class ConfirmDialog (
     private val context:Context,
     private val presenter:RecipeDetailsContract.Presenter?

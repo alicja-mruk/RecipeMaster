@@ -14,7 +14,8 @@ interface RecipeDetailsContract {
         fun displayPhotos(photos : List<String>)
         fun showLoadingError(errorMessage: String?)
         fun onSavePhotosClickListeners(photos: List<String>)
-        fun callSavePicture(url : String)
+        fun setClickedPictureUrl(url : String)
+        fun getClickedPictureUrl() : String
         fun showConfirmDialog()
         fun requestPermissions()
         fun updateUserName(userName : String?)

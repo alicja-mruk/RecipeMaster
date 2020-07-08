@@ -1,4 +1,4 @@
-package com.recipemaster.util.viewDataProcess
+package com.recipemaster.util.processData
 
 object TextFormater{
 

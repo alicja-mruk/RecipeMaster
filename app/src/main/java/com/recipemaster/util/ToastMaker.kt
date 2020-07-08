@@ -5,7 +5,7 @@ import android.widget.Toast
 import com.recipemaster.view.RecipeDetailsActivity
 
 object ToastMaker{
-    val context = RecipeDetailsActivity.getContext()
+    var context = RecipeDetailsActivity.getContext()
     fun showToast(message : String ){
         Toast.makeText(
             context,

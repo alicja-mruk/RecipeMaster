@@ -15,5 +15,5 @@
     <string name="picture_not_saved">Canceled</string>
     <string name="facebook_app_id">1794698407395009</string>
     <string name="fb_login_protocol_scheme">fb1794698407395009</string>
-    <string name="logged_as">Logged as </string>
+    <string name="logged_as">Logged as %1$s</string>
 </resources>

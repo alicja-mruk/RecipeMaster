@@ -1,8 +1,6 @@
 package com.recipemaster.view
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,20 +12,24 @@ import com.recipemaster.model.repository.recipe.RecipeClient
 import com.recipemaster.model.storage.RecipeDetailsService
 import com.recipemaster.presenter.RecipeDetailsPresenter
 import com.recipemaster.util.ToastMaker
+import com.recipemaster.util.ToastMaker.context
 import kotlinx.android.synthetic.main.activity_details.*
 
 
-class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
-    private  var presenter : RecipeDetailsContract.Presenter ? = null
+class RecipeDetailsActivity : AppCompatActivity(),
+    RecipeDetailsContract.View {
+    private var presenter: RecipeDetailsContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         context = applicationContext
 
-        presenter = RecipeDetailsPresenter(this,
-        RecipeClient(), RecipeDetailsService())
-
+        presenter = RecipeDetailsPresenter(
+            this,
+            RecipeClient(),
+            RecipeDetailsService()
+        )
         initView()
     }
 
@@ -48,11 +50,11 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
         displayRecipe(recipe)
     }
 
-    override fun displayRecipe(recipe:Recipe?) {
-        if(recipe == null) return
-            displayTextFields(recipe)
-            displayPhotos(recipe.photos)
-            onSavePhotosClickListeners(recipe.photos)
+    override fun displayRecipe(recipe: Recipe?) {
+        if (recipe == null) return
+        displayTextFields(recipe)
+        displayPhotos(recipe.photos)
+        onSavePhotosClickListeners(recipe.photos)
     }
 
     override fun displayTextFields(recipe: Recipe?) {
@@ -88,19 +90,29 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
         }
     }
 
-    override fun onSavePhotosClickListeners(photos:List<String>) {
-        recipe_image0.setOnClickListener{callSavePicture(photos[0])}
-        recipe_image1.setOnClickListener{callSavePicture(photos[1])}
-        recipe_image2.setOnClickListener{callSavePicture(photos[2])}
+    override fun onSavePhotosClickListeners(photos: List<String>) {
+        recipe_image0.setOnClickListener {
+            setClickedPictureUrl(photos[0])
         }
+        recipe_image1.setOnClickListener {
+            setClickedPictureUrl(photos[1])
+        }
+        recipe_image2.setOnClickListener {
+            setClickedPictureUrl(photos[2])
+        }
+    }
 
-    override fun callSavePicture(url:String) {
+    override fun setClickedPictureUrl(url: String) {
         CLICKED_URL = url
         requestPermissions()
     }
 
+    override fun getClickedPictureUrl() : String{
+        return CLICKED_URL
+    }
+
     override fun showConfirmDialog() {
-       ConfirmDialog( this, presenter)
+        ConfirmDialog(this, presenter)
     }
 
     override fun requestPermissions() {
@@ -108,7 +120,7 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
     }
 
     override fun updateUserName(userName: String?) {
-        logged_as.text = this.getString(R.string.logged_as) + " " +  userName
+        logged_as.text = this.getString(R.string.logged_as, userName)
     }
 
     override fun updateUserProfilePicture(profilePicture: String?) {
@@ -118,25 +130,18 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
                 .load(profilePicture)
                 .into(profile_picture)
         }
-
     }
 
-    override fun updateFooter(userName:String?, photoUrl : String?) {
+    override fun updateFooter(userName: String?, photoUrl: String?) {
         updateUserName(userName)
         updateUserProfilePicture(photoUrl)
     }
 
-    fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    companion object{
-        private var context: Context? = null
-        var CLICKED_URL : String=" "
+    companion object {
         fun getContext(): Context? {
             return context
         }
-
+        var CLICKED_URL = ""
     }
 
 }
