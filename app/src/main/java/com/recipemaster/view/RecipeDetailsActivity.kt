@@ -112,10 +112,6 @@ class RecipeDetailsActivity : AppCompatActivity(), RecipeDetailsContract.View {
     }
 
     override fun updateUserProfilePicture(profilePicture: String?) {
-//        Glide.with(this)
-//            .load(profilePicture)
-//            .placeholder(R.drawable.placeholder)
-//            .into(profile_picture)
         runOnUiThread {
             Glide.with(this)
                 .asBitmap()

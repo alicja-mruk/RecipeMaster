@@ -41,12 +41,12 @@ class HomePresenter(
 
     private lateinit var callbackManager: CallbackManager
     private var permissionNeeds: List<String> =
-        listOf("name", "public_profile", "user_link")
+        listOf("public_profile")
 
 
     init {
         view?.setOnClickListeners()
-        view?.setGetTheRecipeButtonToNotClickable()
+        view?.setGetTheRecipeButtonToNotEnabled()
     }
 
     override fun dropView() {
@@ -106,23 +106,34 @@ class HomePresenter(
                 override fun onSuccess(loginResult: LoginResult?) {
                     if (AccessToken.getCurrentAccessToken() == null) {
                         sharedPreferencesManager.setIsLoggedIn(false)
-                        view?.setGetTheRecipeButtonToNotClickable()
+                        view?.setGetTheRecipeButtonToNotEnabled()
+                        view?.showToast(NO_DATA_RECEIVED)
                     }else{
                         client.requestUserData(userDataCallback)
                         sharedPreferencesManager.setIsLoggedIn(true)
-                        view?.setGetTheRecipeButtonToClickable()
+                        view?.setGetTheRecipeButtonToEnabled()
+                        view?.showToast(LOGIN_SUCCEED)
                     }
                 }
 
                 override fun onCancel() {
-                    view?.showToast(LOGIN_CANCELED)
-                    sharedPreferencesManager.setIsLoggedIn(false)
+                    if (AccessToken.getCurrentAccessToken() == null) {
+                        sharedPreferencesManager.setIsLoggedIn(false)
+                        view?.setGetTheRecipeButtonToNotEnabled()
+                        view?.showToast(LOGIN_CANCELED)
+                    }
+                    else{
+                        client.requestUserData(userDataCallback)
+                        sharedPreferencesManager.setIsLoggedIn(true)
+                        view?.setGetTheRecipeButtonToEnabled()
+                        view?.showToast(LOGIN_CANCELED)
+                    }
                 }
 
                 override fun onError(error: FacebookException?) {
-                    view?.showToast(LOGIN_ERROR)
-                    view?.setGetTheRecipeButtonToNotClickable()
+                    view?.setGetTheRecipeButtonToNotEnabled()
                     sharedPreferencesManager.setIsLoggedIn(false)
+                    view?.showToast(LOGIN_ERROR)
                 }
             })
     }
@@ -150,6 +161,8 @@ class HomePresenter(
         const val PERMISSION_AUDIO_RATIONALE = "You need to give access to the audio"
         const val LOGIN_CANCELED = "Logging has been canceled"
         const val LOGIN_ERROR = "Error has occured"
+        const val LOGIN_SUCCEED="Successfully logged in"
+        const val NO_DATA_RECEIVED="No data received"
     }
 
 

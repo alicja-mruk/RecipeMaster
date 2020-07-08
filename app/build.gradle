@@ -58,9 +58,9 @@ dependencies {
     //manifest permisions simplify library
     implementation 'com.karumi:dexter:6.2.0'
     //facebook sdk
-    implementation 'com.facebook.android:facebook-android-sdk:4.17.0'
-    //progress dialog
-    implementation 'com.github.fevziomurtekin:custom-progress-dialog:0.1.0'
+    implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
+    implementation 'com.android.support:support-annotations:28.0.0'
+    implementation 'com.facebook.android:audience-network-sdk:5.+'
     //    Tests
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

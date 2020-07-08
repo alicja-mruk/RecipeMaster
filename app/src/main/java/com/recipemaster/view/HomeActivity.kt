@@ -5,14 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.*
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookActivity
+import com.facebook.FacebookSdk
 import com.recipemaster.R
 import com.recipemaster.contract.HomeContract
 import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManagerImpl
 import com.recipemaster.model.repository.user.UserClient
 import com.recipemaster.presenter.HomePresenter
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 
 class HomeActivity : AppCompatActivity() , HomeContract.View{
@@ -33,7 +35,7 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
     }
 
     override fun initFacebookSDK() {
-        FacebookSdk.sdkInitialize(getContext())
+        FacebookSdk.sdkInitialize(this)
         FacebookSdk.setApplicationId(getContext().resources?.getString(R.string.facebook_app_id))
     }
 
@@ -60,12 +62,14 @@ class HomeActivity : AppCompatActivity() , HomeContract.View{
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    override fun setGetTheRecipeButtonToClickable() {
+    override fun setGetTheRecipeButtonToEnabled() {
         get_recipe_btn.setAlpha(255)
+        get_recipe_btn.isEnabled = true
     }
 
-    override fun setGetTheRecipeButtonToNotClickable() {
+    override fun setGetTheRecipeButtonToNotEnabled() {
         get_recipe_btn.setAlpha(100)
+        get_recipe_btn.isEnabled = false
     }
 
     override fun onActivityResult(
