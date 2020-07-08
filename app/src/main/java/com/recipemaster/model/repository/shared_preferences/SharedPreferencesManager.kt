@@ -4,6 +4,8 @@ interface SharedPreferencesManager {
 
     fun isLoggedIn(): Boolean
     fun setIsLoggedIn(state : Boolean)
+    fun areStoragePermissions() : Boolean
+    fun setStoragePermissions(_storagePermissions : Boolean)
     fun getCurrentUserId(): String?
 
     fun setCurrentUserId(_userId: String?)

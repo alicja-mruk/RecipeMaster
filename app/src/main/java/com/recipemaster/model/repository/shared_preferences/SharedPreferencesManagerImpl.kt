@@ -2,9 +2,11 @@ package com.recipemaster.model.repository.shared_preferences
 
 object SharedPreferencesManagerImpl :SharedPreferencesManager{
     private  var isLogged : Boolean = false
+    private var givenStoragePermissions : Boolean = false
     private var userId : String?=""
     private var userName: String?= ""
     private var userPhotoUrl : String? = ""
+
 
     override fun isLoggedIn(): Boolean {
         return isLogged
@@ -12,6 +14,14 @@ object SharedPreferencesManagerImpl :SharedPreferencesManager{
 
     override fun setIsLoggedIn(state: Boolean) {
         isLogged = state
+    }
+
+    override fun areStoragePermissions(): Boolean {
+       return givenStoragePermissions
+    }
+
+    override fun setStoragePermissions(_storagePermissions: Boolean) {
+        givenStoragePermissions = _storagePermissions
     }
 
     override fun getCurrentUserId(): String? {

@@ -68,25 +68,31 @@ class RecipeDetailsPresenter(
     }
 
     override fun requestPermissions() {
-        Dexter.withContext(RecipeDetailsActivity.getContext())
-            .withPermissions(Permissions.storagePermissions)
-            .withListener(object : MultiplePermissionsListener {
-                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                    if(allPermissionsGranted(report)){
-                        view?.showConfirmDialog()
-                    }
-                    else{
-                        view?.showToast(PERMISSION_DENIED)
-                    }
-                }
+        if(SharedPreferencesManagerImpl.areStoragePermissions()){
+            view?.showConfirmDialog()
+        }else{
+            Dexter.withContext(RecipeDetailsActivity.getContext())
+                .withPermissions(Permissions.storagePermissions)
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                        if(allPermissionsGranted(report)){
+                            SharedPreferencesManagerImpl.setStoragePermissions(true)
 
-                override fun onPermissionRationaleShouldBeShown(
-                    permissions: List<PermissionRequest>,
-                    token: PermissionToken
-                ) {
-                    view?.showToast(PERMISSION_RATIONALE)
-                }
-            }).check()
+                        }
+                        else{
+                            view?.showToast(PERMISSION_DENIED)
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        permissions: List<PermissionRequest>,
+                        token: PermissionToken
+                    ) {
+                        view?.showToast(PERMISSION_RATIONALE)
+                    }
+                }).check()
+        }
+
 
     }
 
