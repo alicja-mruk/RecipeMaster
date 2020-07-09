@@ -9,8 +9,7 @@ import com.recipemaster.view.RecipeDetailsActivity.Companion.CLICKED_URL
 
 
 class ConfirmDialog (
-    private val context:Context,
-    private val presenter:RecipeDetailsContract.Presenter?
+    private val context:Context
 ){
     private val builder = AlertDialog.Builder(context)
     init{
@@ -22,17 +21,14 @@ class ConfirmDialog (
         builder.setTitle(context.getString(R.string.dialog_title))
         builder.setPositiveButton(YES){dialog, which ->
            ToastMaker.showToast(context.getString(R.string.picture_saved))
-            saveMessageDialog(CLICKED_URL)
+            dialog.dismiss()
         }
         builder.setNegativeButton(NO){dialog,which ->
             ToastMaker.showToast(context.getString(R.string.picture_not_saved))
+            dialog.dismiss()
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
-    }
-
-    private fun saveMessageDialog(url : String){
-        presenter?.savePicture(url)
     }
 
     companion object{

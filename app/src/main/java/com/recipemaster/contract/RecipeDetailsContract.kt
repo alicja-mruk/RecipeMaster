@@ -1,5 +1,6 @@
 package com.recipemaster.contract
 
+import android.content.Context
 import android.os.Bundle
 import com.karumi.dexter.MultiplePermissionsReport
 import com.recipemaster.model.pojo.Recipe
@@ -7,6 +8,7 @@ import com.recipemaster.model.pojo.Recipe
 interface RecipeDetailsContract {
     interface View {
         fun initView()
+        fun getContext() : Context?
         fun showToast(message:String)
         fun updateView(recipe: Recipe?)
         fun displayRecipe(recipe:Recipe?)
@@ -17,7 +19,6 @@ interface RecipeDetailsContract {
         fun setClickedPictureUrl(url : String)
         fun getClickedPictureUrl() : String
         fun showConfirmDialog()
-        fun requestPermissions()
         fun updateUserName(userName : String?)
         fun updateUserProfilePicture(profilePicture:String?)
         fun updateFooter(userName:String?, photoUrl : String?)

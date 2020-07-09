@@ -20,10 +20,9 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.recipemaster.contract.HomeContract
 import com.recipemaster.model.json.JsonParser
-import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManagerImpl
-import com.recipemaster.model.repository.user.UserClient
-import com.recipemaster.presenter.RecipeDetailsPresenter.Companion.NOT_LOGGED
-import com.recipemaster.presenter.RecipeDetailsPresenter.Companion.PERMISSION_DENIED
+import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
+import com.recipemaster.model.network.request.user.UserClient
+import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.Permissions
 import com.recipemaster.view.RecipeDetailsActivity
 import org.json.JSONObject
@@ -51,11 +50,11 @@ class HomePresenter(
     }
 
     override fun openRecipeDetailsActivity() {
-        if (SharedPreferencesManagerImpl.isLoggedIn()) {
+        if (SharedPreferencesManager.isLoggedIn()) {
             val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
             view?.getContext()?.startActivity(intent)
         } else {
-            view?.showToast(NOT_LOGGED)
+            view?.showToast(MessageCallback.NOT_LOGGED)
         }
 
     }
@@ -83,14 +82,14 @@ class HomePresenter(
                 }
 
                 override fun onPermissionDenied(response: PermissionDeniedResponse) {
-                    view?.showToast(PERMISSION_DENIED)
+                    view?.showToast(MessageCallback.PERMISSION_DENIED)
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
                     permission: PermissionRequest?,
                     token: PermissionToken?
                 ) {
-                    view?.showToast(PERMISSION_AUDIO_RATIONALE)
+                    view?.showToast(MessageCallback.PERMISSION_RATIONALE)
                 }
             }).check()
     }
@@ -103,58 +102,62 @@ class HomePresenter(
     }
 
     override fun logIntoFacebook() {
-        callbackManager = CallbackManager.Factory.create()
-        val loginManager = LoginManager.getInstance()
+        if (SharedPreferencesManager.isLoggedIn()) {
+            view?.showToast(MessageCallback.ALREADY_LOGGED)
 
-        loginManager.logInWithReadPermissions(view as Activity, Permissions.facebookCallPermission)
-        LoginManager.getInstance().registerCallback(callbackManager,
-            object : FacebookCallback<LoginResult?> {
+        } else {
+            callbackManager = CallbackManager.Factory.create()
+            val loginManager = LoginManager.getInstance()
 
-                override fun onSuccess(loginResult: LoginResult?) {
-                    onSuccessFacebookCallback()
-                }
+            loginManager.logInWithReadPermissions(
+                view as Activity,
+                Permissions.facebookCallPermission
+            )
 
-                override fun onCancel() {
-                    onCanceledFacebookCallback()
-                }
+            LoginManager.getInstance().registerCallback(callbackManager,
+                object : FacebookCallback<LoginResult?> {
 
-                override fun onError(error: FacebookException?) {
-                    onErrorFacebookCallback()
-                }
-            })
+                    override fun onSuccess(loginResult: LoginResult?) {
+                        onSuccessFacebookCallback()
+                    }
+
+                    override fun onCancel() {
+                        onCanceledFacebookCallback()
+                    }
+
+                    override fun onError(error: FacebookException?) {
+                        onErrorFacebookCallback()
+                    }
+                })
+        }
 
     }
 
     override fun onSuccessFacebookCallback() {
         if (AccessToken.getCurrentAccessToken() == null) {
-            SharedPreferencesManagerImpl.setIsLoggedIn(false)
             view?.setGetTheRecipeButtonToNotEnabled()
-            view?.showToast(NO_DATA_RECEIVED)
+            view?.showToast(MessageCallback.NO_DATA_RECEIVED)
         } else {
             client.requestUserData(userDataCallback)
-            SharedPreferencesManagerImpl.setIsLoggedIn(true)
             view?.setGetTheRecipeButtonToEnabled()
-            view?.showToast(LOGIN_SUCCEED)
+            view?.showToast(MessageCallback.LOGIN_SUCCESS)
         }
     }
 
     override fun onCanceledFacebookCallback() {
         if (AccessToken.getCurrentAccessToken() == null) {
-            SharedPreferencesManagerImpl.setIsLoggedIn(false)
             view?.setGetTheRecipeButtonToNotEnabled()
-            view?.showToast(LOGIN_CANCELED)
+            view?.showToast(MessageCallback.LOGIN_CANCELED)
         } else {
             client.requestUserData(userDataCallback)
-            SharedPreferencesManagerImpl.setIsLoggedIn(true)
             view?.setGetTheRecipeButtonToEnabled()
-            view?.showToast(LOGIN_SUCCEED)
+            view?.showToast(MessageCallback.LOGIN_SUCCESS)
         }
     }
 
     override fun onErrorFacebookCallback() {
         view?.setGetTheRecipeButtonToNotEnabled()
-        SharedPreferencesManagerImpl.setIsLoggedIn(false)
-        view?.showToast(LOGIN_ERROR)
+        view?.showToast(MessageCallback.LOGIN_ERROR)
     }
 
 
@@ -170,21 +173,19 @@ class HomePresenter(
         val userName = jsonParser.parseName()
         val userId = jsonParser.parseUserId()
         val profilePictureUrl = jsonParser.createProfilePictureUrl()
+        saveDataIntoSharedPreferences(userId, userName, profilePictureUrl)
 
-        SharedPreferencesManagerImpl.setCurrentUserId(userId)
-        SharedPreferencesManagerImpl.setCurrentUserName(userName)
-        SharedPreferencesManagerImpl.setCurrentUserPhotoUrl(profilePictureUrl)
 
     }
 
-
-    companion object {
-        const val PERMISSION_AUDIO_RATIONALE = "You need to give access to the audio"
-        const val LOGIN_CANCELED = "Logging has been canceled"
-        const val LOGIN_ERROR = "Error has occured"
-        const val LOGIN_SUCCEED = "Successfully logged in"
-        const val NO_DATA_RECEIVED = "No data received"
+    override fun saveDataIntoSharedPreferences(
+        userId: String?,
+        userName: String?,
+        profilePictureUrl: String?
+    ) {
+        SharedPreferencesManager.setCurrentUserId(userId)
+        SharedPreferencesManager.setCurrentUserName(userName)
+        SharedPreferencesManager.setCurrentUserPhotoUrl(profilePictureUrl)
     }
-
 
 }

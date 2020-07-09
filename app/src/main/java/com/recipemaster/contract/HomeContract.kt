@@ -30,7 +30,7 @@ interface HomeContract {
         fun onErrorFacebookCallback()
         fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
         fun parseJsonResponse(json: JSONObject?)
-
+        fun saveDataIntoSharedPreferences(userId : String?, userName:String?, profilePictureUrl: String?)
     }
 
     interface OnResponseCallback {

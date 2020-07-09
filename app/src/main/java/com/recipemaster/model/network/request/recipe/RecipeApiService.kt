@@ -1,4 +1,4 @@
-package com.recipemaster.model.network.request
+package com.recipemaster.model.network.request.recipe
 
 import com.recipemaster.model.pojo.Recipe
 import retrofit2.Call

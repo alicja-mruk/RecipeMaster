@@ -1,6 +1,6 @@
-package com.recipemaster.model.repository.user
+package com.recipemaster.model.network.request.user
 import com.recipemaster.contract.HomeContract
 
-interface UserRepository {
+interface IUserClient {
     fun requestUserData(onResponseCallback: HomeContract.OnResponseCallback)
 }

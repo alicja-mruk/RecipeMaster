@@ -23,6 +23,7 @@ class RecipeDetailsService : RecipeDetailsContract.Model {
         if (!directory.exists()) {
             directory.mkdirs()
         }
+
         val downloadManager: DownloadManager =
             applicationContext?.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         val uri: Uri = Uri.parse(url)

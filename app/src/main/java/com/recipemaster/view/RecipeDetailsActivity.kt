@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.recipemaster.R
 import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.model.pojo.Recipe
-import com.recipemaster.model.repository.recipe.RecipeClient
+import com.recipemaster.model.network.request.recipe.RecipeClient
 import com.recipemaster.model.storage.RecipeDetailsService
 import com.recipemaster.presenter.RecipeDetailsPresenter
 import com.recipemaster.util.ToastMaker
@@ -30,6 +30,7 @@ class RecipeDetailsActivity : AppCompatActivity(),
             RecipeClient(),
             RecipeDetailsService()
         )
+
         initView()
     }
 
@@ -40,6 +41,10 @@ class RecipeDetailsActivity : AppCompatActivity(),
 
     override fun initView() {
         presenter?.getRecipeData()
+    }
+
+    override fun getContext(): Context? {
+        return this
     }
 
     override fun showToast(message: String) {
@@ -104,7 +109,7 @@ class RecipeDetailsActivity : AppCompatActivity(),
 
     override fun setClickedPictureUrl(url: String) {
         CLICKED_URL = url
-        requestPermissions()
+        presenter?.savePicture(url)
     }
 
     override fun getClickedPictureUrl() : String{
@@ -112,11 +117,7 @@ class RecipeDetailsActivity : AppCompatActivity(),
     }
 
     override fun showConfirmDialog() {
-        ConfirmDialog(this, presenter)
-    }
-
-    override fun requestPermissions() {
-        presenter?.requestPermissions()
+        ConfirmDialog(this)
     }
 
     override fun updateUserName(userName: String?) {

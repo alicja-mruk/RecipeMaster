@@ -32,6 +32,5 @@ class MessageStatus(
         const val RUNNING = "Downloading..."
         const val SUCCESSFUL = "Image downloaded successfully"
         const val NOTHING_TO_DOWNLOAD = "There's nothing to download"
-
     }
 }

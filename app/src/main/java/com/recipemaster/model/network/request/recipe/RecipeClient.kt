@@ -1,7 +1,6 @@
-package com.recipemaster.model.repository.recipe
+package com.recipemaster.model.network.request.recipe
 
 import com.recipemaster.contract.RecipeDetailsContract
-import com.recipemaster.model.network.request.RecipeApiService
 import com.recipemaster.model.network.request.ServiceBuilder
 import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.util.UrlReplacer
@@ -9,10 +8,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RecipeClient : RecipeRepository {
+class RecipeClient : IRecipeClient {
     override fun getRecipe(onResponseCallback: RecipeDetailsContract.OnResponseCallback) {
 
-        val request  = ServiceBuilder.buildService(RecipeApiService::class.java)
+        val request  =
+            ServiceBuilder.buildService(
+                RecipeApiService::class.java
+            )
         val call = request.getRecipe()
 
         call.enqueue(object: Callback<Recipe> {

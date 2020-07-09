@@ -8,8 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.facebook.FacebookSdk
 import com.recipemaster.R
 import com.recipemaster.contract.HomeContract
-import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManagerImpl
-import com.recipemaster.model.repository.user.UserClient
+import com.recipemaster.model.network.request.user.UserClient
 import com.recipemaster.presenter.HomePresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
