@@ -57,11 +57,15 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
     }
 
     override fun setGetTheRecipeButtonToEnabled() {
-        get_recipe_btn.setAlpha(255)
+        get_recipe_btn.setIcon(R.drawable.ic_get_recipe_connected)
+        get_recipe_btn.setColorNormalResId(R.color.colorPrimary)
+        get_recipe_btn.setColorPressedResId(R.color.colorPrimaryDark)
     }
 
     override fun setGetTheRecipeButtonToNotEnabled() {
-        get_recipe_btn.setAlpha(100)
+        get_recipe_btn.setIcon(R.drawable.ic_get_recipe_notconnected)
+        get_recipe_btn.setColorNormalResId(R.color.light_gray)
+        get_recipe_btn.setColorPressedResId(R.color.dark_gray)
     }
 
     override fun onActivityResult(

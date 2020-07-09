@@ -7,4 +7,6 @@
     <color name="yellow_pressed">#FF9800</color>
     <color name="light_gray">#C8C5BF</color>
     <color name="dark_gray">#7E7B76</color>
+    <color name="facebook_blue">#3b5998</color>
+    <color name="facebook_blue_dark">#293F6C</color>
 </resources>

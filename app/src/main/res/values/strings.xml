@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RecipeMaster</string>
     <string name="title">RecipeMaster</string>
-    <string name="login_facebook">Zaloguj przez facebooka</string>
+    <string name="login_facebook">Zaloguj przez Facebooka</string>
     <string name="get_recipe">Get the recipe</string>
     <string name="pizza_recipe">Pizza Recipe!</string>
     <string name="pizza">Pizza:</string>
