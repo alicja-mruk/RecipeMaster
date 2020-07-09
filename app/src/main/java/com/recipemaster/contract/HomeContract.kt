@@ -10,6 +10,8 @@ interface HomeContract {
         fun initFacebookSDK()
         fun getContext(): Context
         fun showToast(message: String)
+        fun fadeHomeScreen()
+        fun unfadeHomeScreen()
         fun setOnClickListeners()
         fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
         fun setGetTheRecipeButtonToEnabled()

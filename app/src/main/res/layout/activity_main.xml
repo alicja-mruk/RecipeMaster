@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:descendantFocusability="blocksDescendants"
     tools:context=".view.HomeActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -37,6 +41,7 @@
         android:layout_height="match_parent">
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/fab_menu_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
