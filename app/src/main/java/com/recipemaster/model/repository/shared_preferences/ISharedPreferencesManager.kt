@@ -6,6 +6,8 @@ interface ISharedPreferencesManager {
     fun setUserData(_json : JSONObject?)
     fun getUserData() : JSONObject?
     fun isLoggedIn(): Boolean
+    fun setConnectionState(_isConnected : Boolean)
+    fun isConnected() : Boolean
     fun areStoragePermissions() : Boolean
     fun setStoragePermissions(_storagePermissions : Boolean)
     fun getCurrentUserId(): String?

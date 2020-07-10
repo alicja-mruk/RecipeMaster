@@ -11,4 +11,5 @@ object MessageCallback {
     const val LOGIN_SUCCESS: String = "Successfully logged in"
     const val NO_DATA_RECEIVED: String = "No data has been received"
     const val NO_INTERNET_CONNECTION : String = "No Internet connection"
+    const val CONNECTED : String = "Connected"
 }

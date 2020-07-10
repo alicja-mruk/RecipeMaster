@@ -1,6 +1,6 @@
 package com.recipemaster.model.repository.shared_preferences
 
-object SaveData {
+object SaveUserData {
     fun saveUserFacebookData(
         userId: String?,
         userName: String?,

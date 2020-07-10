@@ -52,7 +52,9 @@ class HomePresenter(
     }
 
     override fun openRecipeDetailsActivity() {
-        if(isConnected) {
+        setFloatingMenuButtonsBasedOnConnection()
+
+        if(isConnected()) {
             if (isFacebookConnection()) {
                 val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
                 view?.getContext()?.startActivity(intent)
@@ -60,30 +62,44 @@ class HomePresenter(
                 view?.setGetTheRecipeButtonToDisabled()
                 view?.showToast(MessageCallback.NOT_LOGGED)
             }
-        }else{
-            view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
         }
-        setFloatingMenuButtonsBasedOnConnection()
+
     }
 
     override fun setConnectionState(_isConnected: Boolean) {
-        isConnected = _isConnected
+        SharedPreferencesManager.setConnectionState( _isConnected)
+    }
+
+    override fun isConnected(): Boolean {
+        return SharedPreferencesManager.isConnected()
     }
 
     override fun setFloatingMenuButtonsBasedOnConnection() {
-        if(isConnected){
-            view?.setFacebookButtonToEnabled()
+        if(isConnected()){
+            loggedToFacebookViewUpdate()
             if(isFacebookConnection()){
                 view?.setGetTheRecipeButtonToEnabled()
             }
             else{
-                view?.setGetTheRecipeButtonToDisabled()
+                notLoggedToFacebookViewUpdate()
             }
         }
         else{
-            view?.setFacebookButtonToDisabled()
-            view?.setGetTheRecipeButtonToDisabled()
+            noConnectionViewUpdate()
         }
+    }
+    override fun loggedToFacebookViewUpdate(){
+        view?.showToast(MessageCallback.CONNECTED)
+        view?.setFacebookButtonToEnabled()
+    }
+    override fun notLoggedToFacebookViewUpdate(){
+        view?.setGetTheRecipeButtonToDisabled()
+
+    }
+    override fun noConnectionViewUpdate(){
+        view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
+        view?.setFacebookButtonToDisabled()
+        view?.setGetTheRecipeButtonToDisabled()
     }
 
     override fun isFacebookConnection(): Boolean {
@@ -91,7 +107,7 @@ class HomePresenter(
     }
 
     override fun tryLoginToFacebook() {
-        if(isConnected){
+        if(isConnected()){
             if (ContextCompat.checkSelfPermission(
                     view!!.getContext(),
                     Manifest.permission.RECORD_AUDIO
@@ -211,8 +227,7 @@ class HomePresenter(
         ProcessJsonData.parseUserFacebookData(json)
     }
 
-    companion object{
-        var isConnected: Boolean = false
-    }
+
+
 
 }

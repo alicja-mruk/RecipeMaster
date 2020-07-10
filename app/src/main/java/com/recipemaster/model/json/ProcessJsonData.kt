@@ -1,6 +1,6 @@
 package com.recipemaster.model.json
 
-import com.recipemaster.model.repository.shared_preferences.SaveData
+import com.recipemaster.model.repository.shared_preferences.SaveUserData
 import org.json.JSONObject
 
 object ProcessJsonData {
@@ -12,6 +12,6 @@ object ProcessJsonData {
        saveUserDataIntoSharedPreferences(userId, userName, profilePictureUrl)
     }
     private fun saveUserDataIntoSharedPreferences(userId : String?, userName : String?, profilePictureUrl : String?){
-        SaveData.saveUserFacebookData(userId, userName, profilePictureUrl)
+        SaveUserData.saveUserFacebookData(userId, userName, profilePictureUrl)
     }
 }

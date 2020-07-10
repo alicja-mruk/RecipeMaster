@@ -3,6 +3,7 @@ package com.recipemaster.model.repository.shared_preferences
 import org.json.JSONObject
 
 object SharedPreferencesManager :ISharedPreferencesManager{
+    private var isConnected : Boolean = false
     private var json : JSONObject? = null
     private var givenStoragePermissions : Boolean = false
     private var userId : String?=""
@@ -20,6 +21,14 @@ object SharedPreferencesManager :ISharedPreferencesManager{
 
     override fun isLoggedIn(): Boolean {
         return json!=null
+    }
+
+    override fun setConnectionState(_isConnected: Boolean) {
+        isConnected = _isConnected
+    }
+
+    override fun isConnected(): Boolean {
+        return isConnected
     }
 
     override fun areStoragePermissions(): Boolean {
