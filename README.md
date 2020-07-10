@@ -2,7 +2,7 @@
 
 ## Description
 
-Application has been integrated with Facebook API. After Facebook-Float-Button is clicked, the Get-Recipe button is enabled. Get Recipe request the data from REST API, receives a json object and parses it to the proper format. When clicking on the picture, it saves in the default location for camera pictures after showing a pop-up with“Do you want to save the picture" text and giving the user feedback about the successful save. The footer displays name and profile picture of current logged user.
+Application has been integrated with Facebook SDK. After Facebook-Float-Button is clicked, the Get-Recipe button is enabled. Get Recipe request the data from REST API, receives a json object and parses it to the proper format. When clicking on the picture, it saves in the default location for camera pictures after showing a pop-up with“Do you want to save the picture" text and giving the user feedback about the successful save. The footer displays name and profile picture of current logged user.
 
 ## Features
 
