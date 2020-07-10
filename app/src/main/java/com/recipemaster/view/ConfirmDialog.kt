@@ -3,9 +3,7 @@ package com.recipemaster.view
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import com.recipemaster.R
-import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.util.ToastMaker
-import com.recipemaster.view.RecipeDetailsActivity.Companion.CLICKED_URL
 
 
 class ConfirmDialog (

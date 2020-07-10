@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.FacebookSdk
@@ -54,30 +52,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         login_facebook_btn.setOnClickListener {
             presenter?.tryLoginToFacebook()
         }
-        home_layout.setOnTouchListener { v, event ->
-            v?.performClick()
 
-            when (event?.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    fab_menu_btn.collapse()
-                    unfadeHomeScreen()
-                }
-            }
-
-            v?.onTouchEvent(event) ?: true
-        }
-    }
-
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            if (!fab_menu_btn.isExpanded) {
-                fadeHomeScreen()
-            } else {
-                unfadeHomeScreen()
-            }
-        }
-
-        return super.dispatchTouchEvent(event)
     }
 
 
@@ -120,11 +95,14 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
             )
         )
         main_image.setImageResource(R.drawable.home_picture_faded)
+
     }
 
     override fun unfadeHomeScreen() {
+
         home_layout.setBackgroundColor(Color.WHITE)
         main_image.setImageResource(R.drawable.home_picture)
+
     }
 
 }

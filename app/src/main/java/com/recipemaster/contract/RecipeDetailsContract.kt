@@ -1,7 +1,6 @@
 package com.recipemaster.contract
 
 import android.content.Context
-import android.os.Bundle
 import com.karumi.dexter.MultiplePermissionsReport
 import com.recipemaster.model.pojo.Recipe
 

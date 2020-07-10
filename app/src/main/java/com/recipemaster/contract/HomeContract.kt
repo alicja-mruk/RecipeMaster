@@ -24,6 +24,8 @@ interface HomeContract {
     interface Presenter {
         fun dropView()
         fun openRecipeDetailsActivity()
+        fun isInternetConnection() : Boolean
+        fun isFacebookConnection() : Boolean
         fun tryLoginToFacebook()
         fun requestAudioPermissions()
         fun logIntoFacebook()
@@ -32,7 +34,6 @@ interface HomeContract {
         fun onErrorFacebookCallback()
         fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
         fun parseJsonResponse(json: JSONObject?)
-        fun saveDataIntoSharedPreferences(userId : String?, userName:String?, profilePictureUrl: String?)
     }
 
     interface OnResponseCallback {

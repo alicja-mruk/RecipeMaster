@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:descendantFocusability="blocksDescendants"
+    android:descendantFocusability="beforeDescendants"
     tools:context=".view.HomeActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -39,6 +39,8 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/fab_menu_btn"

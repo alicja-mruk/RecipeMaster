@@ -19,9 +19,10 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.recipemaster.contract.HomeContract
-import com.recipemaster.model.json.JsonParser
-import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
+import com.recipemaster.model.json.ProcessJsonData
+import com.recipemaster.model.network.connection.NetworkState
 import com.recipemaster.model.network.request.user.UserClient
+import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
 import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.Permissions
 import com.recipemaster.view.RecipeDetailsActivity
@@ -50,13 +51,26 @@ class HomePresenter(
     }
 
     override fun openRecipeDetailsActivity() {
-        if (SharedPreferencesManager.isLoggedIn()) {
-            val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
-            view?.getContext()?.startActivity(intent)
+        if (isInternetConnection()) {
+            if (isFacebookConnection()) {
+                val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
+                view?.getContext()?.startActivity(intent)
+            } else {
+                view?.showToast(MessageCallback.NOT_LOGGED)
+            }
         } else {
-            view?.showToast(MessageCallback.NOT_LOGGED)
+            view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
         }
 
+
+    }
+
+    override fun isInternetConnection(): Boolean {
+        return NetworkState.isInternetConnection(view!!.getContext())
+    }
+
+    override fun isFacebookConnection(): Boolean {
+        return SharedPreferencesManager.isLoggedIn()
     }
 
     override fun tryLoginToFacebook() {
@@ -169,23 +183,6 @@ class HomePresenter(
     }
 
     override fun parseJsonResponse(json: JSONObject?) {
-        val jsonParser = JsonParser(json)
-        val userName = jsonParser.parseName()
-        val userId = jsonParser.parseUserId()
-        val profilePictureUrl = jsonParser.createProfilePictureUrl()
-        saveDataIntoSharedPreferences(userId, userName, profilePictureUrl)
-
-
+        ProcessJsonData.parseUserFacebookData(json)
     }
-
-    override fun saveDataIntoSharedPreferences(
-        userId: String?,
-        userName: String?,
-        profilePictureUrl: String?
-    ) {
-        SharedPreferencesManager.setCurrentUserId(userId)
-        SharedPreferencesManager.setCurrentUserName(userName)
-        SharedPreferencesManager.setCurrentUserPhotoUrl(profilePictureUrl)
-    }
-
 }

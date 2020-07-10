@@ -1,4 +1,4 @@
-package com.recipemaster.facebook
+package com.recipemaster.view.facebook
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

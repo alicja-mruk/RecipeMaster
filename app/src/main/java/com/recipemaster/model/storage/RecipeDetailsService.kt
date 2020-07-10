@@ -5,7 +5,6 @@ import android.content.Context.DOWNLOAD_SERVICE
 import android.database.Cursor
 import android.net.Uri
 import android.os.Environment
-import android.os.Message
 import android.widget.Toast
 import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.view.RecipeDetailsActivity

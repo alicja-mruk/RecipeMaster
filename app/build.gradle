@@ -41,6 +41,8 @@ dependencies {
     //     circle-shaped image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //fab support
+
+
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     //fetching data
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'
@@ -55,6 +57,7 @@ dependencies {
     //rxjava
     implementation "io.reactivex.rxjava3:rxjava:3.0.4"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     //manifest permisions simplify library
     implementation 'com.karumi:dexter:6.2.0'
     //facebook sdk

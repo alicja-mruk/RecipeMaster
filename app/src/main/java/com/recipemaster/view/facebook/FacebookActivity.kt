@@ -1,10 +1,8 @@
-package com.recipemaster.facebook
+package com.recipemaster.view.facebook
 
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.facebook.FacebookSdk
-import com.facebook.appevents.AppEventsLogger
 import com.recipemaster.R
 
 class FacebookActivity : AppCompatActivity() {
