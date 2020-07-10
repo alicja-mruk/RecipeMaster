@@ -7,10 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.recipemaster.R
 import com.recipemaster.contract.RecipeDetailsContract
-import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.model.network.request.recipe.RecipeClient
+import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.model.storage.RecipeDetailsService
 import com.recipemaster.presenter.RecipeDetailsPresenter
+import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.ToastMaker
 import com.recipemaster.util.ToastMaker.context
 import kotlinx.android.synthetic.main.activity_details.*
@@ -27,8 +28,7 @@ class RecipeDetailsActivity : AppCompatActivity(),
 
         presenter = RecipeDetailsPresenter(
             this,
-            RecipeClient(),
-            RecipeDetailsService()
+            RecipeClient()
         )
 
         initView()
@@ -112,7 +112,7 @@ class RecipeDetailsActivity : AppCompatActivity(),
         presenter?.savePicture(url)
     }
 
-    override fun getClickedPictureUrl() : String{
+    override fun getClickedPictureUrl(): String {
         return CLICKED_URL
     }
 
@@ -138,10 +138,17 @@ class RecipeDetailsActivity : AppCompatActivity(),
         updateUserProfilePicture(photoUrl)
     }
 
+    override fun onBackPressed() {
+        if (!(presenter!!.isGetRecipeAvailable())) {
+            showToast(MessageCallback.NO_INTERNET_CONNECTION)
+        }
+    }
+
     companion object {
         fun getContext(): Context? {
             return context
         }
+
         var CLICKED_URL = ""
     }
 

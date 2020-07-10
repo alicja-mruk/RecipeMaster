@@ -6,6 +6,7 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.recipemaster.contract.RecipeDetailsContract
+import com.recipemaster.model.network.connection.NetworkState
 import com.recipemaster.model.network.request.recipe.IRecipeClient
 import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
@@ -18,27 +19,20 @@ import com.recipemaster.view.RecipeDetailsActivity
 
 class RecipeDetailsPresenter(
     _view: RecipeDetailsContract.View?,
-    _clientI: IRecipeClient,
-    _storage_client: RecipeDetailsService
+    _client: IRecipeClient
 ) : RecipeDetailsContract.Presenter {
 
     private var view: RecipeDetailsContract.View? = _view
-    private val networkClientI: IRecipeClient = _clientI
-    private val storageClient: RecipeDetailsService = _storage_client
+    private val networkClient: IRecipeClient = _client
 
-
-    init {
-        view?.initView()
-    }
 
     override fun dropView() {
         view = null
     }
 
     override fun savePicture(url: String) {
-        if (!SharedPreferencesManager.areStoragePermissions()) {
-            requestPermissions()
-        }
+        checkPermissions()
+
         if (SharedPreferencesManager.areStoragePermissions()) {
             try {
                 view?.showConfirmDialog()
@@ -52,8 +46,7 @@ class RecipeDetailsPresenter(
     }
 
     override fun getRecipeData() {
-        //todo check network connection
-        networkClientI.getRecipe(callback)
+        networkClient.getRecipe(callback)
         callUpdateFooterView()
     }
 
@@ -73,37 +66,38 @@ class RecipeDetailsPresenter(
         view?.updateUserProfilePicture(userPhotoUrl)
     }
 
-    override fun requestPermissions() {
+    override fun checkPermissions() {
         if (!SharedPreferencesManager.areStoragePermissions()) {
-            Dexter.withContext(RecipeDetailsActivity.getContext())
-                .withPermissions(Permissions.storagePermissions)
-                .withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                        if (allPermissionsGranted(report)) {
-                            SharedPreferencesManager.setStoragePermissions(true)
-                        } else {
-                            view?.showToast(
-                                MessageCallback.PERMISSION_DENIED
-                            )
-                        }
-                    }
-
-                    override fun onPermissionRationaleShouldBeShown(
-                        permissions: List<PermissionRequest>,
-                        token: PermissionToken
-                    ) {
-
-                        view?.showToast(
-                            MessageCallback.PERMISSION_RATIONALE
-                        )
-
-                    }
-                }).check()
+            requestPermissions()
         }
-
-
     }
 
+    override fun requestPermissions() {
+        Dexter.withContext(RecipeDetailsActivity.getContext())
+            .withPermissions(Permissions.storagePermissions)
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                    if (allPermissionsGranted(report)) {
+                        SharedPreferencesManager.setStoragePermissions(true)
+                    } else {
+                        view?.showToast(
+                            MessageCallback.PERMISSION_DENIED
+                        )
+                    }
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permissions: List<PermissionRequest>,
+                    token: PermissionToken
+                ) {
+
+                    view?.showToast(
+                        MessageCallback.PERMISSION_RATIONALE
+                    )
+
+                }
+            }).check()
+    }
     private var callback = object : RecipeDetailsContract.OnResponseCallback {
         override fun onResponse(recipe: Recipe) {
             view?.updateView(recipe)
@@ -112,6 +106,10 @@ class RecipeDetailsPresenter(
         override fun onError(errorMessage: String?) {
             view?.showLoadingError(errorMessage)
         }
+    }
+
+    override fun isGetRecipeAvailable(): Boolean {
+        return SharedPreferencesManager.isLoggedIn() && NetworkState.isInternetConnection(view!!.getContext()!!)
     }
 
     override fun allPermissionsGranted(report: MultiplePermissionsReport): Boolean {

@@ -2,6 +2,7 @@ package com.recipemaster.presenter
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
@@ -36,33 +37,41 @@ class HomePresenter(
 
     private var view: HomeContract.View? = _view
     private val client: UserClient = _client
-
     private lateinit var callbackManager: CallbackManager
 
 
     init {
-        view?.setOnClickListeners()
-        view?.setGetTheRecipeButtonToNotEnabled()
-
+        view?.initView()
     }
 
     override fun dropView() {
         view = null
     }
 
+    override fun getView(): Context? {
+        return view?.getContext()
+    }
+
     override fun openRecipeDetailsActivity() {
         if (isInternetConnection()) {
             if (isFacebookConnection()) {
+                view?.setGetTheRecipeButtonToEnabled()
                 val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
                 view?.getContext()?.startActivity(intent)
             } else {
+                view?.setGetTheRecipeButtonToNotEnabled()
                 view?.showToast(MessageCallback.NOT_LOGGED)
             }
         } else {
+            view?.setGetTheRecipeButtonToNotEnabled()
             view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
         }
 
 
+    }
+
+    override fun isGetRecipeAvailable(): Boolean {
+        return isFacebookConnection() && isInternetConnection()
     }
 
     override fun isInternetConnection(): Boolean {
@@ -74,16 +83,22 @@ class HomePresenter(
     }
 
     override fun tryLoginToFacebook() {
-        if (ContextCompat.checkSelfPermission(
-                view!!.getContext(),
-                Manifest.permission.RECORD_AUDIO
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            logIntoFacebook()
-        } else {
-            requestAudioPermissions()
-            logIntoFacebook()
+        if (isInternetConnection()) {
+            view?.setFacebookButtonToEnabled()
+            if (ContextCompat.checkSelfPermission(
+                    view!!.getContext(),
+                    Manifest.permission.RECORD_AUDIO
+                )
+                == PackageManager.PERMISSION_GRANTED
+            ) {
+                logIntoFacebook()
+            } else {
+                requestAudioPermissions()
+            }
+        }
+        else{
+            view?.setFacebookButtonToDisabled()
+            view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
         }
     }
 
@@ -120,10 +135,9 @@ class HomePresenter(
             view?.showToast(MessageCallback.ALREADY_LOGGED)
 
         } else {
-            callbackManager = CallbackManager.Factory.create()
-            val loginManager = LoginManager.getInstance()
 
-            loginManager.logInWithReadPermissions(
+            callbackManager = CallbackManager.Factory.create()
+            LoginManager.getInstance().logInWithReadPermissions(
                 view as Activity,
                 Permissions.facebookCallPermission
             )
@@ -176,9 +190,14 @@ class HomePresenter(
 
 
     private var userDataCallback = object : HomeContract.OnResponseCallback {
+
         override fun onResponse(json: JSONObject?) {
             parseJsonResponse(json)
             Log.d("FB_RESPONSE: ", json.toString())
+        }
+
+        override fun onError(message: String) {
+
         }
     }
 

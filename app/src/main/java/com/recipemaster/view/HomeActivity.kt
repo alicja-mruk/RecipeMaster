@@ -2,7 +2,6 @@ package com.recipemaster.view
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,8 +21,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         initFacebookSDK()
         setContentView(R.layout.activity_main)
         presenter = HomePresenter(this, UserClient())
-
-
+        checkInternetConnection()
     }
 
     override fun initView() {
@@ -37,6 +35,17 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
 
     override fun getContext(): Context {
         return this
+    }
+
+    override fun checkInternetConnection() {
+        if (presenter?.isInternetConnection()!!) {
+            setFacebookButtonToEnabled()
+            setGetTheRecipeButtonToEnabled()
+        } else {
+            setFacebookButtonToDisabled()
+            setGetTheRecipeButtonToNotEnabled()
+        }
+
     }
 
     override fun showToast(message: String) {
@@ -53,6 +62,10 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
             presenter?.tryLoginToFacebook()
         }
 
+    }
+
+    override fun onBackPressed() {
+        checkInternetConnection()
     }
 
 
@@ -72,6 +85,16 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         get_recipe_btn.setColorPressedResId(R.color.dark_gray)
     }
 
+    override fun setFacebookButtonToEnabled() {
+        login_facebook_btn.setColorNormalResId(R.color.facebook_blue)
+        login_facebook_btn.setColorPressedResId(R.color.facebook_blue_dark)
+    }
+
+    override fun setFacebookButtonToDisabled() {
+        login_facebook_btn.setColorNormalResId(R.color.light_gray)
+        login_facebook_btn.setColorPressedResId(R.color.dark_gray)
+    }
+
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
@@ -85,26 +108,6 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         super.onDestroy()
         presenter?.dropView()
     }
-
-    override fun fadeHomeScreen() {
-        val homeColor: Int = home_layout.solidColor
-        home_layout.setBackgroundColor(
-            Color.argb(
-                128, Color.red(homeColor),
-                Color.green(homeColor), Color.blue(homeColor)
-            )
-        )
-        main_image.setImageResource(R.drawable.home_picture_faded)
-
-    }
-
-    override fun unfadeHomeScreen() {
-
-        home_layout.setBackgroundColor(Color.WHITE)
-        main_image.setImageResource(R.drawable.home_picture)
-
-    }
-
 }
 
 

@@ -17,7 +17,6 @@ class UserClient : IUserClient {
                 AccessToken.getCurrentAccessToken(),
                 object : GraphRequest.GraphJSONObjectCallback {
                     override fun onCompleted(`object`: JSONObject?, response: GraphResponse?) {
-//                    Log.d("fb", `object`.toString())
                         val json = response!!.jsonObject
                         SharedPreferencesManager.setUserData(json)
                         onResponseCallback.onResponse(json)

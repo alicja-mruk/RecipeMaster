@@ -26,9 +26,11 @@ interface RecipeDetailsContract {
     interface Presenter {
         fun dropView()
         fun savePicture(url : String)
+        fun isGetRecipeAvailable () : Boolean
         fun getRecipeData()
         fun formatIngredients(ingredients : List<String>) : String
         fun formatPreparing(preparing : List<String>) : String
+        fun checkPermissions()
         fun requestPermissions()
         fun allPermissionsGranted(report: MultiplePermissionsReport) : Boolean
         fun callUpdateFooterView()
