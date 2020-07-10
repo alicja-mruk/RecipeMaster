@@ -32,6 +32,7 @@ interface RecipeDetailsContract {
         fun formatPreparing(preparing : List<String>) : String
         fun checkPermissions()
         fun requestPermissions()
+        fun callModelOnSavePicture()
         fun allPermissionsGranted(report: MultiplePermissionsReport) : Boolean
         fun callUpdateFooterView()
     }

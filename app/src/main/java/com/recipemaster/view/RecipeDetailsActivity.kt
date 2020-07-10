@@ -11,7 +11,6 @@ import com.recipemaster.model.network.request.recipe.RecipeClient
 import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.model.storage.RecipeDetailsService
 import com.recipemaster.presenter.RecipeDetailsPresenter
-import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.ToastMaker
 import com.recipemaster.util.ToastMaker.context
 import kotlinx.android.synthetic.main.activity_details.*
@@ -28,7 +27,8 @@ class RecipeDetailsActivity : AppCompatActivity(),
 
         presenter = RecipeDetailsPresenter(
             this,
-            RecipeClient()
+            RecipeClient(),
+            RecipeDetailsService()
         )
         initView()
     }
@@ -107,16 +107,16 @@ class RecipeDetailsActivity : AppCompatActivity(),
     }
 
     override fun setClickedPictureUrl(url: String) {
-        CLICKED_URL = url
+        clickedPictureUrl = url
         presenter?.savePicture(url)
     }
 
     override fun getClickedPictureUrl(): String {
-        return CLICKED_URL
+        return clickedPictureUrl
     }
 
     override fun showConfirmDialog() {
-        ConfirmDialog(this)
+        ConfirmDialog(this, presenter)
     }
 
     override fun updateUserName(userName: String?) {
@@ -143,7 +143,7 @@ class RecipeDetailsActivity : AppCompatActivity(),
             return context
         }
 
-        var CLICKED_URL = ""
+        private var clickedPictureUrl = ""
     }
 
 }

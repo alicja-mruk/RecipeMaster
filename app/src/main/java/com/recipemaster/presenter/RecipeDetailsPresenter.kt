@@ -17,11 +17,13 @@ import com.recipemaster.view.RecipeDetailsActivity
 
 class RecipeDetailsPresenter(
     _view: RecipeDetailsContract.View?,
-    _client: IRecipeClient
+    _client: IRecipeClient,
+    _storage_client : RecipeDetailsContract.Model
 ) : RecipeDetailsContract.Presenter {
 
     private var view: RecipeDetailsContract.View? = _view
     private val networkClient: IRecipeClient = _client
+    private val storageClient : RecipeDetailsContract.Model = _storage_client
 
     override fun dropView() {
         view = null
@@ -40,6 +42,10 @@ class RecipeDetailsPresenter(
         } else {
             view?.showToast(MessageCallback.PERMISSION_DENIED)
         }
+    }
+
+    override fun callModelOnSavePicture() {
+        storageClient.savePictureIntoStorage(view?.getClickedPictureUrl()!!)
     }
 
     override fun getRecipeData() {
