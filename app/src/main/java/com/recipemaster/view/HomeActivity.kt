@@ -2,18 +2,21 @@ package com.recipemaster.view
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.FacebookSdk
 import com.recipemaster.R
 import com.recipemaster.contract.HomeContract
+import com.recipemaster.model.network.receiver.ConnectivityReceiver
 import com.recipemaster.model.network.request.user.UserClient
 import com.recipemaster.presenter.HomePresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class HomeActivity : AppCompatActivity(), HomeContract.View {
+class HomeActivity : AppCompatActivity(), HomeContract.View, ConnectivityReceiver.ConnectivityReceiverListener {
     private var presenter: HomeContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +24,8 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         initFacebookSDK()
         setContentView(R.layout.activity_main)
         presenter = HomePresenter(this, UserClient())
-        checkInternetConnection()
+
+        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
     override fun initView() {
@@ -35,17 +39,6 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
 
     override fun getContext(): Context {
         return this
-    }
-
-    override fun checkInternetConnection() {
-        if (presenter?.isInternetConnection()!!) {
-            setFacebookButtonToEnabled()
-            setGetTheRecipeButtonToEnabled()
-        } else {
-            setFacebookButtonToDisabled()
-            setGetTheRecipeButtonToNotEnabled()
-        }
-
     }
 
     override fun showToast(message: String) {
@@ -65,9 +58,8 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
     }
 
     override fun onBackPressed() {
-        checkInternetConnection()
+        finish()
     }
-
 
     override fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -79,7 +71,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
         get_recipe_btn.setColorPressedResId(R.color.colorPrimaryDark)
     }
 
-    override fun setGetTheRecipeButtonToNotEnabled() {
+    override fun setGetTheRecipeButtonToDisabled() {
         get_recipe_btn.setIcon(R.drawable.ic_get_recipe_notconnected)
         get_recipe_btn.setColorNormalResId(R.color.light_gray)
         get_recipe_btn.setColorPressedResId(R.color.dark_gray)
@@ -107,6 +99,16 @@ class HomeActivity : AppCompatActivity(), HomeContract.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter?.dropView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ConnectivityReceiver.connectivityReceiverListener = this
+    }
+
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        presenter?.setConnectionState(isConnected)
+        presenter?.setFloatingMenuButtonsBasedOnConnection()
     }
 }
 

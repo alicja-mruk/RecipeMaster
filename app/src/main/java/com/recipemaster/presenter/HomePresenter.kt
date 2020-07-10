@@ -21,7 +21,6 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.recipemaster.contract.HomeContract
 import com.recipemaster.model.json.ProcessJsonData
-import com.recipemaster.model.network.connection.NetworkState
 import com.recipemaster.model.network.request.user.UserClient
 import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
 import com.recipemaster.util.MessageCallback
@@ -53,29 +52,38 @@ class HomePresenter(
     }
 
     override fun openRecipeDetailsActivity() {
-        if (isInternetConnection()) {
+        if(isConnected) {
             if (isFacebookConnection()) {
-                view?.setGetTheRecipeButtonToEnabled()
                 val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
                 view?.getContext()?.startActivity(intent)
             } else {
-                view?.setGetTheRecipeButtonToNotEnabled()
+                view?.setGetTheRecipeButtonToDisabled()
                 view?.showToast(MessageCallback.NOT_LOGGED)
             }
-        } else {
-            view?.setGetTheRecipeButtonToNotEnabled()
+        }else{
             view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
         }
-
-
+        setFloatingMenuButtonsBasedOnConnection()
     }
 
-    override fun isGetRecipeAvailable(): Boolean {
-        return isFacebookConnection() && isInternetConnection()
+    override fun setConnectionState(_isConnected: Boolean) {
+        isConnected = _isConnected
     }
 
-    override fun isInternetConnection(): Boolean {
-        return NetworkState.isInternetConnection(view!!.getContext())
+    override fun setFloatingMenuButtonsBasedOnConnection() {
+        if(isConnected){
+            view?.setFacebookButtonToEnabled()
+            if(isFacebookConnection()){
+                view?.setGetTheRecipeButtonToEnabled()
+            }
+            else{
+                view?.setGetTheRecipeButtonToDisabled()
+            }
+        }
+        else{
+            view?.setFacebookButtonToDisabled()
+            view?.setGetTheRecipeButtonToDisabled()
+        }
     }
 
     override fun isFacebookConnection(): Boolean {
@@ -83,8 +91,7 @@ class HomePresenter(
     }
 
     override fun tryLoginToFacebook() {
-        if (isInternetConnection()) {
-            view?.setFacebookButtonToEnabled()
+        if(isConnected){
             if (ContextCompat.checkSelfPermission(
                     view!!.getContext(),
                     Manifest.permission.RECORD_AUDIO
@@ -97,7 +104,6 @@ class HomePresenter(
             }
         }
         else{
-            view?.setFacebookButtonToDisabled()
             view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
         }
     }
@@ -163,7 +169,7 @@ class HomePresenter(
 
     override fun onSuccessFacebookCallback() {
         if (AccessToken.getCurrentAccessToken() == null) {
-            view?.setGetTheRecipeButtonToNotEnabled()
+            view?.setGetTheRecipeButtonToDisabled()
             view?.showToast(MessageCallback.NO_DATA_RECEIVED)
         } else {
             client.requestUserData(userDataCallback)
@@ -174,7 +180,7 @@ class HomePresenter(
 
     override fun onCanceledFacebookCallback() {
         if (AccessToken.getCurrentAccessToken() == null) {
-            view?.setGetTheRecipeButtonToNotEnabled()
+            view?.setGetTheRecipeButtonToDisabled()
             view?.showToast(MessageCallback.LOGIN_CANCELED)
         } else {
             client.requestUserData(userDataCallback)
@@ -184,7 +190,7 @@ class HomePresenter(
     }
 
     override fun onErrorFacebookCallback() {
-        view?.setGetTheRecipeButtonToNotEnabled()
+        view?.setGetTheRecipeButtonToDisabled()
         view?.showToast(MessageCallback.LOGIN_ERROR)
     }
 
@@ -197,11 +203,16 @@ class HomePresenter(
         }
 
         override fun onError(message: String) {
-
+            view?.showToast(message)
         }
     }
 
     override fun parseJsonResponse(json: JSONObject?) {
         ProcessJsonData.parseUserFacebookData(json)
     }
+
+    companion object{
+        var isConnected: Boolean = false
+    }
+
 }

@@ -10,13 +10,12 @@ interface HomeContract {
     interface View {
         fun initView()
         fun initFacebookSDK()
-        fun checkInternetConnection()
         fun getContext(): Context
         fun showToast(message: String)
         fun setOnClickListeners()
         fun callOnActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
         fun setGetTheRecipeButtonToEnabled()
-        fun setGetTheRecipeButtonToNotEnabled()
+        fun setGetTheRecipeButtonToDisabled()
         fun setFacebookButtonToEnabled()
         fun setFacebookButtonToDisabled()
 //        fun showProgressDialog()
@@ -28,8 +27,8 @@ interface HomeContract {
         fun dropView()
         fun getView() : Context?
         fun openRecipeDetailsActivity()
-        fun isGetRecipeAvailable() : Boolean
-        fun isInternetConnection() : Boolean
+        fun setConnectionState(_isConnected : Boolean)
+        fun setFloatingMenuButtonsBasedOnConnection()
         fun isFacebookConnection() : Boolean
         fun tryLoginToFacebook()
         fun requestAudioPermissions()

@@ -6,11 +6,9 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.recipemaster.contract.RecipeDetailsContract
-import com.recipemaster.model.network.connection.NetworkState
 import com.recipemaster.model.network.request.recipe.IRecipeClient
 import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
-import com.recipemaster.model.storage.RecipeDetailsService
 import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.Permissions
 import com.recipemaster.util.processData.TextFormater
@@ -24,7 +22,6 @@ class RecipeDetailsPresenter(
 
     private var view: RecipeDetailsContract.View? = _view
     private val networkClient: IRecipeClient = _client
-
 
     override fun dropView() {
         view = null
@@ -49,7 +46,6 @@ class RecipeDetailsPresenter(
         networkClient.getRecipe(callback)
         callUpdateFooterView()
     }
-
 
     override fun formatIngredients(ingredients: List<String>): String {
         return TextFormater.processIngredients(ingredients)
@@ -98,6 +94,7 @@ class RecipeDetailsPresenter(
                 }
             }).check()
     }
+
     private var callback = object : RecipeDetailsContract.OnResponseCallback {
         override fun onResponse(recipe: Recipe) {
             view?.updateView(recipe)
@@ -109,7 +106,7 @@ class RecipeDetailsPresenter(
     }
 
     override fun isGetRecipeAvailable(): Boolean {
-        return SharedPreferencesManager.isLoggedIn() && NetworkState.isInternetConnection(view!!.getContext()!!)
+        return SharedPreferencesManager.isLoggedIn()
     }
 
     override fun allPermissionsGranted(report: MultiplePermissionsReport): Boolean {

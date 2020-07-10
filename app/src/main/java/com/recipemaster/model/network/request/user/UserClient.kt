@@ -10,9 +10,7 @@ import org.json.JSONObject
 
 class UserClient : IUserClient {
     override fun requestUserData(onResponseCallback: HomeContract.OnResponseCallback) {
-        if (
-            !SharedPreferencesManager.isLoggedIn()
-        ) {
+        if (!SharedPreferencesManager.isLoggedIn()) {
             val request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 object : GraphRequest.GraphJSONObjectCallback {

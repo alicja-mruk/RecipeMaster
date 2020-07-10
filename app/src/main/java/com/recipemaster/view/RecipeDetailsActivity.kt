@@ -30,7 +30,6 @@ class RecipeDetailsActivity : AppCompatActivity(),
             this,
             RecipeClient()
         )
-
         initView()
     }
 
@@ -138,11 +137,6 @@ class RecipeDetailsActivity : AppCompatActivity(),
         updateUserProfilePicture(photoUrl)
     }
 
-    override fun onBackPressed() {
-        if (!(presenter!!.isGetRecipeAvailable())) {
-            showToast(MessageCallback.NO_INTERNET_CONNECTION)
-        }
-    }
 
     companion object {
         fun getContext(): Context? {
