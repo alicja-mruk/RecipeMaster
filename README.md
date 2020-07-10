@@ -6,22 +6,23 @@ Application has been integrated with Facebook SDK. After Facebook-Float-Button i
 
 ## Features
 
--  Facebook Connection through Facebook SDK 
+- Facebook Connection through Facebook SDK 
 - Data request from REST API
 - Network Connection Broadcast Receiver 
 - Floating Actions Buttons Menu
+- Layout matches different screen resolutions
 - **Architecture : MVP**
 
 ## Technologies used
 
--  [Retrofit](https://square.github.io/retrofit/ "Retrofit")
+- [Retrofit](https://square.github.io/retrofit/ "Retrofit")
 - [Gson](https://github.com/google/gson "Gson")
 - [RxJava](https://github.com/ReactiveX/RxJava "RxJava")
 - [Dexter](https://github.com/Karumi/Dexter "Dexter") (library that simplifies the process of requesting permissions at runtime)
 - [Glide](https://github.com/bumptech/glide "Glide")
 - [Circle Image View](https://github.com/hdodenhof/CircleImageView "Circle Image View") 
 - [Floating Action Button Support Library](https://github.com/zendesk/android-floating-action-button "Floating Action Button Support library") 
-- [ Material Design](https://material.io/develop/android/docs/getting-started/ " Material Design") 
+- [Material Design](https://material.io/develop/android/docs/getting-started/ " Material Design") 
 
 ## Screenshots
 
