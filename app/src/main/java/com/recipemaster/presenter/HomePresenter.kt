@@ -54,7 +54,7 @@ class HomePresenter(
     override fun openRecipeDetailsActivity() {
         setFloatingMenuButtonsBasedOnConnection()
 
-        if(isConnected()) {
+        if (isConnected()) {
             if (isFacebookConnection()) {
                 val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
                 view?.getContext()?.startActivity(intent)
@@ -67,7 +67,7 @@ class HomePresenter(
     }
 
     override fun setConnectionState(_isConnected: Boolean) {
-        SharedPreferencesManager.setConnectionState( _isConnected)
+        SharedPreferencesManager.setConnectionState(_isConnected)
     }
 
     override fun isConnected(): Boolean {
@@ -75,28 +75,27 @@ class HomePresenter(
     }
 
     override fun setFloatingMenuButtonsBasedOnConnection() {
-        if(isConnected()){
+        if (isConnected()) {
             loggedToFacebookViewUpdate()
-            if(isFacebookConnection()){
+            if (isFacebookConnection()) {
                 view?.setGetTheRecipeButtonToEnabled()
-            }
-            else{
+            } else {
                 notLoggedToFacebookViewUpdate()
             }
-        }
-        else{
+        } else {
             noConnectionViewUpdate()
         }
     }
-    override fun loggedToFacebookViewUpdate(){
-        view?.showToast(MessageCallback.CONNECTED)
+
+    override fun loggedToFacebookViewUpdate() {
         view?.setFacebookButtonToEnabled()
     }
-    override fun notLoggedToFacebookViewUpdate(){
-        view?.setGetTheRecipeButtonToDisabled()
 
+    override fun notLoggedToFacebookViewUpdate() {
+        view?.setGetTheRecipeButtonToDisabled()
     }
-    override fun noConnectionViewUpdate(){
+
+    override fun noConnectionViewUpdate() {
         view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
         view?.setFacebookButtonToDisabled()
         view?.setGetTheRecipeButtonToDisabled()
@@ -107,7 +106,7 @@ class HomePresenter(
     }
 
     override fun tryLoginToFacebook() {
-        if(isConnected()){
+        if (isConnected()) {
             if (ContextCompat.checkSelfPermission(
                     view!!.getContext(),
                     Manifest.permission.RECORD_AUDIO
@@ -118,8 +117,7 @@ class HomePresenter(
             } else {
                 requestAudioPermissions()
             }
-        }
-        else{
+        } else {
             view?.showToast(MessageCallback.NO_INTERNET_CONNECTION)
         }
     }
@@ -226,8 +224,6 @@ class HomePresenter(
     override fun parseJsonResponse(json: JSONObject?) {
         ProcessJsonData.parseUserFacebookData(json)
     }
-
-
 
 
 }
