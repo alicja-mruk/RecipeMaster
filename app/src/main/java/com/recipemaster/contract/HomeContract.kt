@@ -7,6 +7,7 @@ import com.facebook.login.LoginResult
 import org.json.JSONObject
 
 interface HomeContract {
+
     interface View {
         fun initView()
         fun initFacebookSDK()
@@ -21,7 +22,6 @@ interface HomeContract {
         fun createProgressDialog()
         fun showProgressDialog()
         fun dismissProgressDialog()
-
     }
 
     interface Presenter {
