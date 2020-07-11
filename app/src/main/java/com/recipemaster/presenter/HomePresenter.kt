@@ -30,12 +30,11 @@ import org.json.JSONObject
 
 
 class HomePresenter(
-    _view: HomeContract.View?,
-    _client: UserClient
+    _view: HomeContract.View?
 ) : HomeContract.Presenter {
 
     private var view: HomeContract.View? = _view
-    private val client: UserClient = _client
+    private val client = UserClient ()
     private lateinit var callbackManager: CallbackManager
 
 

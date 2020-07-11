@@ -27,11 +27,7 @@ class RecipeDetailsActivity : AppCompatActivity(),
         setContentView(R.layout.activity_details)
         context = applicationContext
 
-        presenter = RecipeDetailsPresenter(
-            this,
-            RecipeClient(),
-            RecipeDetailsService()
-        )
+        presenter = RecipeDetailsPresenter(this)
         initView()
     }
 

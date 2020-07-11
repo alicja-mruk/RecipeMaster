@@ -7,8 +7,10 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.model.network.request.recipe.IRecipeClient
+import com.recipemaster.model.network.request.recipe.RecipeClient
 import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.model.repository.Repository
+import com.recipemaster.model.storage.RecipeDetailsService
 import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.Permissions
 import com.recipemaster.util.processData.TextFormater
@@ -16,14 +18,12 @@ import com.recipemaster.view.RecipeDetailsActivity
 
 
 class RecipeDetailsPresenter(
-    _view: RecipeDetailsContract.View?,
-    _client: IRecipeClient,
-    _storage_client : RecipeDetailsContract.Model
+    _view: RecipeDetailsContract.View?
 ) : RecipeDetailsContract.Presenter {
 
     private var view: RecipeDetailsContract.View? = _view
-    private val networkClient: IRecipeClient = _client
-    private val storageClient : RecipeDetailsContract.Model = _storage_client
+    private val networkClient= RecipeClient()
+    private val storageClient = RecipeDetailsService()
 
     override fun dropView() {
         view = null
