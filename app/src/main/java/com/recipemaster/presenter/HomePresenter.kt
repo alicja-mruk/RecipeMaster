@@ -22,7 +22,7 @@ import com.karumi.dexter.listener.single.PermissionListener
 import com.recipemaster.contract.HomeContract
 import com.recipemaster.model.json.ProcessJsonData
 import com.recipemaster.model.network.request.user.UserClient
-import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
+import com.recipemaster.model.repository.Repository
 import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.Permissions
 import com.recipemaster.view.RecipeDetailsActivity
@@ -53,25 +53,26 @@ class HomePresenter(
 
     override fun openRecipeDetailsActivity() {
         setFloatingMenuButtonsBasedOnConnection()
-
+        view?.showProgressDialog()
         if (isConnected()) {
             if (isFacebookConnection()) {
                 val intent = Intent(view?.getContext(), RecipeDetailsActivity::class.java)
                 view?.getContext()?.startActivity(intent)
+                view?.dismissProgressDialog()
             } else {
                 view?.setGetTheRecipeButtonToDisabled()
                 view?.showToast(MessageCallback.NOT_LOGGED)
             }
         }
-
+        view?.dismissProgressDialog()
     }
 
     override fun setConnectionState(_isConnected: Boolean) {
-        SharedPreferencesManager.setConnectionState(_isConnected)
+       Repository.setConnectionState(_isConnected)
     }
 
     override fun isConnected(): Boolean {
-        return SharedPreferencesManager.isConnected()
+        return Repository.isConnected()
     }
 
     override fun setFloatingMenuButtonsBasedOnConnection() {
@@ -102,7 +103,7 @@ class HomePresenter(
     }
 
     override fun isFacebookConnection(): Boolean {
-        return SharedPreferencesManager.isLoggedIn()
+        return Repository.isLoggedIn()
     }
 
     override fun tryLoginToFacebook() {
@@ -151,7 +152,7 @@ class HomePresenter(
     }
 
     override fun logIntoFacebook() {
-        if (SharedPreferencesManager.isLoggedIn()) {
+        if (Repository.isLoggedIn()) {
             view?.showToast(MessageCallback.ALREADY_LOGGED)
 
         } else {

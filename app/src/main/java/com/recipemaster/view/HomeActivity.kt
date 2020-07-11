@@ -6,6 +6,7 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.FacebookSdk
 import com.recipemaster.R
@@ -16,8 +17,10 @@ import com.recipemaster.presenter.HomePresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class HomeActivity : AppCompatActivity(), HomeContract.View, ConnectivityReceiver.ConnectivityReceiverListener {
+class HomeActivity : AppCompatActivity(), HomeContract.View,
+    ConnectivityReceiver.ConnectivityReceiverListener{
     private var presenter: HomeContract.Presenter? = null
+    private lateinit var progressBarDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +28,15 @@ class HomeActivity : AppCompatActivity(), HomeContract.View, ConnectivityReceive
         setContentView(R.layout.activity_main)
         presenter = HomePresenter(this, UserClient())
 
-        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        registerReceiver(
+            ConnectivityReceiver(),
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
     }
 
     override fun initView() {
         setOnClickListeners()
+        createProgressDialog()
     }
 
     override fun initFacebookSDK() {
@@ -87,6 +94,25 @@ class HomeActivity : AppCompatActivity(), HomeContract.View, ConnectivityReceive
         login_facebook_btn.setColorPressedResId(R.color.dark_gray)
     }
 
+    override fun createProgressDialog() {
+        val builder = AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.progress_dialog, null)
+        builder.setView(dialogView)
+        builder.setCancelable(false)
+        progressBarDialog = builder.create()
+    }
+
+    override fun showProgressDialog() {
+        progressBarDialog.show()
+    }
+
+    override fun dismissProgressDialog() {
+
+        progressBarDialog.dismiss()
+
+
+    }
+
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
@@ -110,6 +136,7 @@ class HomeActivity : AppCompatActivity(), HomeContract.View, ConnectivityReceive
         presenter?.setConnectionState(isConnected)
         presenter?.setFloatingMenuButtonsBasedOnConnection()
     }
+
 }
 
 

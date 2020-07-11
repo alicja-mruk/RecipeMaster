@@ -1,6 +1,6 @@
 package com.recipemaster.model.json
 
-import com.recipemaster.model.repository.shared_preferences.SaveUserData
+import com.recipemaster.model.repository.SaveUserData
 import org.json.JSONObject
 
 object ProcessJsonData {

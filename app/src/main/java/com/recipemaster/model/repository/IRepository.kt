@@ -1,8 +1,8 @@
-package com.recipemaster.model.repository.shared_preferences
+package com.recipemaster.model.repository
 
 import org.json.JSONObject
 
-interface ISharedPreferencesManager {
+interface IRepository {
     fun setUserData(_json : JSONObject?)
     fun getUserData() : JSONObject?
     fun isLoggedIn(): Boolean

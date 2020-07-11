@@ -1,8 +1,8 @@
-package com.recipemaster.model.repository.shared_preferences
+package com.recipemaster.model.repository
 
 import org.json.JSONObject
 
-object SharedPreferencesManager :ISharedPreferencesManager{
+object Repository : IRepository {
     private var isConnected : Boolean = false
     private var json : JSONObject? = null
     private var givenStoragePermissions : Boolean = false
@@ -11,56 +11,56 @@ object SharedPreferencesManager :ISharedPreferencesManager{
     private var userPhotoUrl : String? = ""
 
     override fun setUserData(_json: JSONObject?) {
-        json = _json
+        com.recipemaster.model.repository.Repository.json = _json
     }
 
     override fun getUserData(): JSONObject? {
-        return json
+        return com.recipemaster.model.repository.Repository.json
     }
 
 
     override fun isLoggedIn(): Boolean {
-        return json!=null
+        return com.recipemaster.model.repository.Repository.json !=null
     }
 
     override fun setConnectionState(_isConnected: Boolean) {
-        isConnected = _isConnected
+        com.recipemaster.model.repository.Repository.isConnected = _isConnected
     }
 
     override fun isConnected(): Boolean {
-        return isConnected
+        return com.recipemaster.model.repository.Repository.isConnected
     }
 
     override fun areStoragePermissions(): Boolean {
-       return givenStoragePermissions
+       return com.recipemaster.model.repository.Repository.givenStoragePermissions
     }
 
     override fun setStoragePermissions(_storagePermissions: Boolean) {
-        givenStoragePermissions = _storagePermissions
+        com.recipemaster.model.repository.Repository.givenStoragePermissions = _storagePermissions
     }
 
     override fun getCurrentUserId(): String? {
-        return userId
+        return com.recipemaster.model.repository.Repository.userId
     }
 
     override fun setCurrentUserId(_userId: String?) {
-        userId = _userId
+        com.recipemaster.model.repository.Repository.userId = _userId
     }
 
     override fun getCurrentUserName(): String? {
-        return userName
+        return com.recipemaster.model.repository.Repository.userName
     }
 
     override fun setCurrentUserName(_userName: String?) {
-      userName = _userName
+      com.recipemaster.model.repository.Repository.userName = _userName
     }
 
     override fun getCurrentUserPhotoUrl(): String? {
-        return userPhotoUrl
+        return com.recipemaster.model.repository.Repository.userPhotoUrl
     }
 
     override fun setCurrentUserPhotoUrl(_userPhotoUrl: String?) {
-        userPhotoUrl = _userPhotoUrl
+        com.recipemaster.model.repository.Repository.userPhotoUrl = _userPhotoUrl
     }
 
 }

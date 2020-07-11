@@ -11,13 +11,15 @@ import com.recipemaster.model.network.request.recipe.RecipeClient
 import com.recipemaster.model.pojo.Recipe
 import com.recipemaster.model.storage.RecipeDetailsService
 import com.recipemaster.presenter.RecipeDetailsPresenter
+import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.ToastMaker
 import com.recipemaster.util.ToastMaker.context
 import kotlinx.android.synthetic.main.activity_details.*
 
 
 class RecipeDetailsActivity : AppCompatActivity(),
-    RecipeDetailsContract.View {
+    RecipeDetailsContract.View,
+    SaveDialog.SaveDialogListener{
     private var presenter: RecipeDetailsContract.Presenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,7 +118,8 @@ class RecipeDetailsActivity : AppCompatActivity(),
     }
 
     override fun showConfirmDialog() {
-        ConfirmDialog(this, presenter)
+        val confirmDialog = SaveDialog()
+        confirmDialog.show(supportFragmentManager, "Save Picture Dialog")
     }
 
     override fun updateUserName(userName: String?) {
@@ -144,6 +147,13 @@ class RecipeDetailsActivity : AppCompatActivity(),
         }
 
         private var clickedPictureUrl = ""
+    }
+
+    override fun onYesClicked() {
+        presenter?.callModelOnSavePicture()
+    }
+    override fun onNoClicked(){
+        showToast(MessageCallback.CANCELLED)
     }
 
 }

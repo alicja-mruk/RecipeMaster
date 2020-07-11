@@ -16,4 +16,5 @@
     <string name="facebook_app_id">1794698407395009</string>
     <string name="fb_login_protocol_scheme">fb1794698407395009</string>
     <string name="logged_as">Logged as %1$s</string>
+    <string name="fetching_data">Fetching data…</string>
 </resources>

@@ -18,8 +18,9 @@ interface HomeContract {
         fun setGetTheRecipeButtonToDisabled()
         fun setFacebookButtonToEnabled()
         fun setFacebookButtonToDisabled()
-//        fun showProgressDialog()
-//        fun dismissProgressDialog()
+        fun createProgressDialog()
+        fun showProgressDialog()
+        fun dismissProgressDialog()
 
     }
 

@@ -5,18 +5,17 @@ import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import com.facebook.GraphResponse
 import com.recipemaster.contract.HomeContract
-import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
 import org.json.JSONObject
 
 class UserClient : IUserClient {
     override fun requestUserData(onResponseCallback: HomeContract.OnResponseCallback) {
-        if (!SharedPreferencesManager.isLoggedIn()) {
+        if (!com.recipemaster.model.repository.Repository.isLoggedIn()) {
             val request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 object : GraphRequest.GraphJSONObjectCallback {
                     override fun onCompleted(`object`: JSONObject?, response: GraphResponse?) {
                         val json = response!!.jsonObject
-                        SharedPreferencesManager.setUserData(json)
+                        com.recipemaster.model.repository.Repository.setUserData(json)
                         onResponseCallback.onResponse(json)
                     }
                 })
@@ -26,7 +25,7 @@ class UserClient : IUserClient {
             request.executeAsync()
         }
         else{
-            onResponseCallback.onResponse(SharedPreferencesManager.getUserData())
+            onResponseCallback.onResponse(com.recipemaster.model.repository.Repository.getUserData())
         }
     }
 }

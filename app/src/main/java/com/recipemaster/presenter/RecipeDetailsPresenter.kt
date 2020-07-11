@@ -8,7 +8,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.recipemaster.contract.RecipeDetailsContract
 import com.recipemaster.model.network.request.recipe.IRecipeClient
 import com.recipemaster.model.pojo.Recipe
-import com.recipemaster.model.repository.shared_preferences.SharedPreferencesManager
+import com.recipemaster.model.repository.Repository
 import com.recipemaster.util.MessageCallback
 import com.recipemaster.util.Permissions
 import com.recipemaster.util.processData.TextFormater
@@ -32,13 +32,9 @@ class RecipeDetailsPresenter(
     override fun savePicture(url: String) {
         checkPermissions()
 
-        if (SharedPreferencesManager.areStoragePermissions()) {
-            try {
-                view?.showConfirmDialog()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                view?.showToast(MessageCallback.SAVING_ERROR)
-            }
+
+        if (Repository.areStoragePermissions()) {
+            view?.showConfirmDialog()
         } else {
             view?.showToast(MessageCallback.PERMISSION_DENIED)
         }
@@ -62,14 +58,14 @@ class RecipeDetailsPresenter(
     }
 
     override fun callUpdateFooterView() {
-        val name = SharedPreferencesManager.getCurrentUserName()
-        val userPhotoUrl = SharedPreferencesManager.getCurrentUserPhotoUrl()
+        val name = Repository.getCurrentUserName()
+        val userPhotoUrl = Repository.getCurrentUserPhotoUrl()
         view?.updateUserName(name)
         view?.updateUserProfilePicture(userPhotoUrl)
     }
 
     override fun checkPermissions() {
-        if (!SharedPreferencesManager.areStoragePermissions()) {
+        if (!Repository.areStoragePermissions()) {
             requestPermissions()
         }
     }
@@ -80,7 +76,7 @@ class RecipeDetailsPresenter(
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                     if (allPermissionsGranted(report)) {
-                        SharedPreferencesManager.setStoragePermissions(true)
+                        Repository.setStoragePermissions(true)
                     } else {
                         view?.showToast(
                             MessageCallback.PERMISSION_DENIED
@@ -112,7 +108,7 @@ class RecipeDetailsPresenter(
     }
 
     override fun isGetRecipeAvailable(): Boolean {
-        return SharedPreferencesManager.isLoggedIn()
+        return  Repository.isLoggedIn()
     }
 
     override fun allPermissionsGranted(report: MultiplePermissionsReport): Boolean {
