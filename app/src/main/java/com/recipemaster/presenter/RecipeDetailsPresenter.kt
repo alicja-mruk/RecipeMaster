@@ -22,7 +22,7 @@ class RecipeDetailsPresenter(
 ) : RecipeDetailsContract.Presenter {
 
     private var view: RecipeDetailsContract.View? = _view
-    private val networkClient= RecipeClient()
+    private val networkClient = RecipeClient()
     private val storageClient = RecipeDetailsService()
 
     override fun dropView() {
