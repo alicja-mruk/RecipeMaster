@@ -150,8 +150,9 @@ class RecipeDetailsActivity : AppCompatActivity(),
     }
 
     override fun onYesClicked() {
-        presenter?.callModelOnSavePicture()
+        presenter?.callModelOnSavePicture(getClickedPictureUrl())
     }
+
     override fun onNoClicked(){
         showToast(MessageCallback.CANCELLED)
     }

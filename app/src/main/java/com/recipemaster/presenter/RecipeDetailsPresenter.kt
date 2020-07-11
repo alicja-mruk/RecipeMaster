@@ -40,8 +40,8 @@ class RecipeDetailsPresenter(
         }
     }
 
-    override fun callModelOnSavePicture() {
-        storageClient.savePictureIntoStorage(view?.getClickedPictureUrl()!!)
+    override fun callModelOnSavePicture(url : String) {
+        storageClient.savePictureIntoStorage(url)
     }
 
     override fun getRecipeData() {
