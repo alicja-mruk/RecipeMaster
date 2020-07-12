@@ -1,6 +1,7 @@
 package com.recipemaster.util
 
 object MessageCallback {
+    const val PERMISSION_AUDIO: String = "Access is needed to connect with Facebook. Please grant them manually."
     const val PERMISSION_RATIONALE: String = "Access to the storage is needed to save the picture"
     const val PERMISSION_DENIED: String = "Permission denied"
     const val NOT_LOGGED: String = "You need to log in to access the data"

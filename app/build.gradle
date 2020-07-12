@@ -44,7 +44,7 @@ dependencies {
     //fab support
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     //fetching data
-    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
@@ -65,7 +65,13 @@ dependencies {
     implementation 'com.facebook.android:audience-network-sdk:5.+'
     //    Tests
     testImplementation 'junit:junit:4.13'
-    testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
+
+
+    // required if you want to use Mockito for unit tests
+    testImplementation 'org.mockito:mockito-inline:3.2.4'
+
+    // required if you want to use Mockito for Android tests
+    androidTestImplementation 'org.mockito:mockito-android:3.2.4'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 

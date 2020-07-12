@@ -18,7 +18,9 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener
 import com.karumi.dexter.listener.single.PermissionListener
+import com.recipemaster.R
 import com.recipemaster.contract.HomeContract
 import com.recipemaster.model.json.ProcessJsonData
 import com.recipemaster.model.network.request.user.UserClient
@@ -74,6 +76,14 @@ class HomePresenter(
         return Repository.isConnected()
     }
 
+    override fun isAudioPermission(): Boolean {
+        return (ContextCompat.checkSelfPermission(
+            view!!.getContext(),
+            Manifest.permission.RECORD_AUDIO
+        )
+                == PackageManager.PERMISSION_GRANTED)
+    }
+
     override fun setFloatingMenuButtonsBasedOnConnection() {
         if (isConnected()) {
             loggedToFacebookViewUpdate()
@@ -105,14 +115,10 @@ class HomePresenter(
         return Repository.isLoggedIn()
     }
 
+
     override fun tryLoginToFacebook() {
         if (isConnected()) {
-            if (ContextCompat.checkSelfPermission(
-                    view!!.getContext(),
-                    Manifest.permission.RECORD_AUDIO
-                )
-                == PackageManager.PERMISSION_GRANTED
-            ) {
+            if (isAudioPermission()) {
                 logIntoFacebook()
             } else {
                 requestAudioPermissions()
@@ -122,7 +128,9 @@ class HomePresenter(
         }
     }
 
+
     override fun requestAudioPermissions() {
+
         Dexter.withContext(view?.getContext())
             .withPermission(Manifest.permission.RECORD_AUDIO)
             .withListener(object : PermissionListener {
@@ -138,7 +146,8 @@ class HomePresenter(
                     permission: PermissionRequest?,
                     token: PermissionToken?
                 ) {
-                    view?.showToast(MessageCallback.PERMISSION_RATIONALE)
+                    view?.showToast(MessageCallback.PERMISSION_AUDIO)
+
                 }
             }).check()
     }

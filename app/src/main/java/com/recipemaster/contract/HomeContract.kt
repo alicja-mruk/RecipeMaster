@@ -30,6 +30,7 @@ interface HomeContract {
         fun openRecipeDetailsActivity()
         fun setConnectionState(_isConnected : Boolean)
         fun isConnected () : Boolean
+        fun isAudioPermission() : Boolean
         fun setFloatingMenuButtonsBasedOnConnection()
         fun loggedToFacebookViewUpdate()
         fun notLoggedToFacebookViewUpdate()

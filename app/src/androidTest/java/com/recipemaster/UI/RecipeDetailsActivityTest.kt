@@ -1,10 +1,11 @@
-package com.recipemaster
+package com.recipemaster.UI
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.recipemaster.R
 import com.recipemaster.view.RecipeDetailsActivity
 import org.hamcrest.core.IsNot.not
 import org.junit.Rule
@@ -24,7 +25,6 @@ class RecipeDetailsActivityTest {
 
     @Test
     fun test_visibility_recipeTitle() {
-
         onView(withId(R.id.recipe_title))
             .check(matches(isDisplayed()))
     }
@@ -111,4 +111,23 @@ class RecipeDetailsActivityTest {
         onView(withId(R.id.profile_picture))
             .check(matches(not(isDisplayed())))
     }
+
+    @Test
+    fun test_isClickable_image0(){
+        onView(withId(R.id.recipe_image0))
+            .check(matches(isClickable()))
+    }
+
+    @Test
+    fun test_isClickable_image1(){
+        onView(withId(R.id.recipe_image1))
+            .check(matches(isClickable()))
+    }
+    @Test
+    fun test_isClickable_image2(){
+        onView(withId(R.id.recipe_image2))
+            .check(matches(isClickable()))
+    }
+
+
 }

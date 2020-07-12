@@ -29,20 +29,20 @@ class HomeActivity : AppCompatActivity(), HomeContract.View,
         setContentView(R.layout.activity_main)
         presenter = HomePresenter(this)
 
+        registerReceiver(
+            ConnectivityReceiver(),
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
 
     }
 
     override fun initView() {
         setOnClickListeners()
         createProgressDialog()
-        registerReceiver(
-            ConnectivityReceiver(),
-            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-        )
+
     }
 
     override fun initFacebookSDK() {
-        FacebookSdk.sdkInitialize(this)
         FacebookSdk.setApplicationId(getContext().resources?.getString(R.string.facebook_app_id))
     }
 
