@@ -17,7 +17,6 @@ Application has been integrated with Facebook SDK. After Facebook-Float-Button i
 
 - [Retrofit](https://square.github.io/retrofit/ "Retrofit")
 - [Gson](https://github.com/google/gson "Gson")
-- [RxJava](https://github.com/ReactiveX/RxJava "RxJava")
 - [Dexter](https://github.com/Karumi/Dexter "Dexter") (library that simplifies the process of requesting permissions at runtime)
 - [Glide](https://github.com/bumptech/glide "Glide")
 - [Circle Image View](https://github.com/hdodenhof/CircleImageView "Circle Image View") 
